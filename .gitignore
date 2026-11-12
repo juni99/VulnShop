@@ -1,0 +1,18 @@
+# DB 실제 접속정보
+config/db.php
+
+# 사용자 업로드 파일
+uploads/*
+!uploads/.htaccess
+
+# 임시/백업 파일
+*.bak
+*.navbak
+*.couponbak
+
+# 테스트 파일
+db-test.php
+
+# OS / Editor
+.DS_Store
+Thumbs.db
