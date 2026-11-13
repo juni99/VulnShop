@@ -9,7 +9,6 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$userId = (int)$_SESSION['user_id'];
 $orderId = (int)($_GET['id'] ?? 0);
 
 
@@ -27,15 +26,10 @@ $stmt = $conn->prepare("
         created_at
     FROM orders
     WHERE id = ?
-    AND user_id = ?
     LIMIT 1
 ");
 
-$stmt->bind_param(
-    "ii",
-    $orderId,
-    $userId
-);
+$stmt->bind_param("i", $orderId);
 
 $stmt->execute();
 
