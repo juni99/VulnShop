@@ -7,6 +7,7 @@ require_once __DIR__ . '/config/db.php';
 /*
  * 관리자 인증
  */
+/*
 if (
     !isset($_SESSION['user_id']) ||
     !isset($_SESSION['role']) ||
@@ -15,6 +16,18 @@ if (
 
     http_response_code(403);
     die('관리자만 접근할 수 있습니다.');
+} */
+
+/*
+ * [VULNERABLE LAB]
+ * Broken Access Control
+ *
+ * 로그인 여부만 확인하고 관리자 역할은 검증하지 않음
+ */
+
+if (!isset($_SESSION['user_id'])) {
+    http_response_code(403);
+    die('로그인이 필요합니다.');
 }
 
 
