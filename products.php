@@ -4,7 +4,7 @@ session_start();
 
 require_once __DIR__ . '/config/db.php';
 
-$productId = (int)($_GET['id'] ?? 0);
+$productId = $_GET['id'] ?? 0;
 $message = '';
 $error = '';
 
@@ -107,23 +107,21 @@ if ($productId <= 0) {
     /*
      * 상품 상세 조회
      */
-    $stmt = $conn->prepare("
-        SELECT
-            id,
-            name,
-            description,
-            price,
-            stock,
-            image
-        FROM products
-        WHERE id = ?
-        LIMIT 1
-    ");
+    $sql = "
+    SELECT
+        id,
+        name,
+        description,
+        price,
+        stock,
+        image
+    FROM products
+    WHERE id = $productId
+    LIMIT 1
+";
 
-    $stmt->bind_param("i", $productId);
-    $stmt->execute();
-
-    $product = $stmt->get_result()->fetch_assoc();
+$result = $conn->query($sql);
+$product = $result ? $result->fetch_assoc() : null;
 
     if (!$product) {
         http_response_code(404);
