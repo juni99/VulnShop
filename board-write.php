@@ -94,47 +94,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     );
                 }
 
-
                 /*
-                 * MIME Type 검사
-                 */
-                $finfo = new finfo(FILEINFO_MIME_TYPE);
-
-                $mimeType = $finfo->file(
-                    $file['tmp_name']
-                );
-
-                $allowedMimeTypes = [
-    'jpg' => [
-        'image/jpeg'
-    ],
-    'jpeg' => [
-        'image/jpeg'
-    ],
-    'png' => [
-        'image/png'
-    ],
-    'pdf' => [
-        'application/pdf'
-    ],
-    'txt' => [
-        'text/plain',
-        'application/octet-stream'
-    ]
-];
-
-if (
-    !isset($allowedMimeTypes[$extension]) ||
-    !in_array(
-        $mimeType,
-        $allowedMimeTypes[$extension],
-        true
-    )
-) {
-    throw new Exception(
-        '허용되지 않는 파일 형식입니다. MIME: ' . $mimeType
-    );
-}
+                * [VULNERABLE LAB]
+                * Insufficient File Type Validation
+                *
+                * 실제 파일의 MIME 유형 검증을 의도적으로 생략함.
+                * 기존 확장자 검사와 크기 제한은 유지함.
+                * uploads/.htaccess의 PHP 실행 차단도 유지함.
+                */
 
 
                 /*
