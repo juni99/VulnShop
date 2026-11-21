@@ -69,108 +69,195 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>회원가입 - VulnShop</title>
 
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/auth.css">
 </head>
 
-<body>
+<body class="auth-page">
 
-<header>
-    <div class="container header-inner">
+<?php require __DIR__ . '/config/header.php'; ?>
 
-        <h1>
-            <a href="/">VulnShop</a>
-        </h1>
+<main class="auth-main">
 
-        <?php require __DIR__ . '/config/nav.php'; ?>
+    <section class="auth-card register-card">
 
-    </div>
-</header>
+        <div class="auth-heading">
 
-<main class="container">
+            <span class="auth-label">
+                VULNSHOP MEMBERSHIP
+            </span>
 
-    <section class="hero">
+            <h2 class="auth-logo">
+                <span>Vuln</span>Shop
+            </h2>
 
-        <h2>회원가입</h2>
+            <h3>회원가입</h3>
+
+            <p>
+                VulnShop의 새로운 회원이 되어
+                <br>
+                다양한 디지털 제품을 만나보세요.
+            </p>
+
+        </div>
 
         <?php if ($error): ?>
-            <p style="color:red;">
-                <?= htmlspecialchars($error) ?>
-            </p>
+
+            <div class="auth-alert auth-error"
+                 role="alert">
+
+                <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
+
+            </div>
+
         <?php endif; ?>
 
         <?php if ($success): ?>
-            <p style="color:green;">
-                <?= htmlspecialchars($success) ?>
-            </p>
+
+            <div class="auth-alert auth-success"
+                 role="status">
+
+                <?= htmlspecialchars($success, ENT_QUOTES, 'UTF-8') ?>
+
+                <br>
+
+                <a href="/login.php">
+                    로그인 페이지로 이동 →
+                </a>
+
+            </div>
+
         <?php endif; ?>
 
-        <form method="post">
+        <form method="post" class="auth-form">
 
-            <p>
-                <label>
-                    아이디<br>
-                    <input
-                        type="text"
-                        name="username"
-                        required
-                    >
+            <div class="auth-field">
+
+                <label for="username">
+                    아이디
+                    <span class="required-mark">*</span>
                 </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="사용할 아이디를 입력해 주세요."
+                    autocomplete="username"
+                    required
+                >
+
+            </div>
+
+            <div class="auth-field">
+
+                <label for="email">
+                    이메일
+                    <span class="required-mark">*</span>
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="example@email.com"
+                    autocomplete="email"
+                    required
+                >
+
+            </div>
+
+            <div class="auth-field">
+
+                <label for="password">
+                    비밀번호
+                    <span class="required-mark">*</span>
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="사용할 비밀번호를 입력해 주세요."
+                    autocomplete="new-password"
+                    required
+                >
+
+            </div>
+
+            <div class="auth-field">
+
+                <label for="password_confirm">
+                    비밀번호 확인
+                    <span class="required-mark">*</span>
+                </label>
+
+                <input
+                    type="password"
+                    id="password_confirm"
+                    name="password_confirm"
+                    placeholder="비밀번호를 다시 입력해 주세요."
+                    autocomplete="new-password"
+                    required
+                >
+
+            </div>
+
+            <p class="auth-required-info">
+                * 표시된 항목은 필수 입력 항목입니다.
             </p>
 
-            <p>
-                <label>
-                    이메일<br>
-                    <input
-                        type="email"
-                        name="email"
-                        required
-                    >
-                </label>
-            </p>
-
-            <p>
-                <label>
-                    비밀번호<br>
-                    <input
-                        type="password"
-                        name="password"
-                        required
-                    >
-                </label>
-            </p>
-
-            <p>
-                <label>
-                    비밀번호 확인<br>
-                    <input
-                        type="password"
-                        name="password_confirm"
-                        required
-                    >
-                </label>
-            </p>
-
-            <button class="button" type="submit">
+            <button
+                class="auth-button"
+                type="submit"
+            >
                 회원가입
             </button>
 
         </form>
 
+        <div class="auth-divider"></div>
+
+        <div class="auth-bottom">
+
+            <p>
+                이미 VulnShop 회원이신가요?
+            </p>
+
+            <a class="auth-outline-button"
+               href="/login.php">
+
+                로그인
+
+            </a>
+
+            <a class="auth-home-link"
+               href="/">
+
+                쇼핑몰 홈으로 돌아가기
+
+            </a>
+
+        </div>
+
     </section>
 
 </main>
 
-<footer>
-    <p>VulnShop Security Lab</p>
-</footer>
+<?php require __DIR__ . '/config/footer.php'; ?>
 
 </body>
 </html>

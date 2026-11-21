@@ -3,6 +3,7 @@
 session_start();
 
 require_once __DIR__ . '/config/db.php';
+require_once __DIR__ . '/config/order-status.php';
 /*
 if (
     !isset($_SESSION['user_id']) ||
@@ -124,193 +125,327 @@ $orders = $conn->query("
 ");
 
 ?>
+
 <!DOCTYPE html>
 <html lang="ko">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>주문 관리 - VulnShop</title>
 
-    <link
-        rel="stylesheet"
-        href="/css/style.css"
-    >
-
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/products.css">
+    <link rel="stylesheet" href="/css/admin.css">
 </head>
 
-<body>
+<body class="admin-page">
 
-<header>
+<?php require __DIR__ . '/config/header.php'; ?>
 
-    <div class="container header-inner">
+<main class="container admin-main">
 
-        <h1>
-            <a href="/">VulnShop</a>
-        </h1>
-
-        <?php require __DIR__ . '/config/nav.php'; ?>
-
+    <div class="breadcrumb">
+        <a href="/">홈</a>
+        <span>/</span>
+        <a href="/admin.php">관리자</a>
+        <span>/</span>
+        <span>주문 관리</span>
     </div>
 
-</header>
+    <section class="admin-heading">
 
-
-<main class="container">
-
-    <section class="hero">
+        <span class="section-label">
+            VULNSHOP ADMINISTRATION
+        </span>
 
         <h2>주문 관리</h2>
 
-        <a
-            class="button"
-            href="/admin.php"
-        >
-            관리자 대시보드
-        </a>
-
-        <?php if ($message): ?>
-
-            <p style="color:green;">
-                <?= htmlspecialchars($message) ?>
-            </p>
-
-        <?php endif; ?>
-
-        <?php if ($error): ?>
-
-            <p style="color:red;">
-                <?= htmlspecialchars($error) ?>
-            </p>
-
-        <?php endif; ?>
+        <p>
+            전체 주문 정보를 확인하고
+            주문 처리 상태를 관리할 수 있습니다.
+        </p>
 
     </section>
 
+    <div class="admin-top-actions">
 
-    <section class="hero">
+        <a class="admin-secondary-button"
+           href="/admin.php">
 
-        <?php if ($orders->num_rows === 0): ?>
+            관리자 대시보드로 돌아가기
 
-            <p>등록된 주문이 없습니다.</p>
+        </a>
 
-        <?php else: ?>
+    </div>
+
+    <!-- 처리 결과 -->
+
+    <?php if ($message): ?>
+
+        <div class="admin-alert admin-alert-success"
+             role="status">
+
+            <?= htmlspecialchars(
+                $message,
+                ENT_QUOTES,
+                'UTF-8'
+            ) ?>
+
+        </div>
+
+    <?php endif; ?>
+
+    <?php if ($error): ?>
+
+        <div class="admin-alert admin-alert-error"
+             role="alert">
+
+            <?= htmlspecialchars(
+                $error,
+                ENT_QUOTES,
+                'UTF-8'
+            ) ?>
+
+        </div>
+
+    <?php endif; ?>
+
+    <!-- 주문 목록 -->
+
+    <div class="admin-section-heading">
+
+        <h3>전체 주문 목록</h3>
+
+        <span>
+            총 <?= (int)$orders->num_rows ?>건
+        </span>
+
+    </div>
+
+    <?php if ($orders->num_rows === 0): ?>
+
+        <section class="admin-empty">
+
+            <h3>등록된 주문이 없습니다.</h3>
+
+            <p>
+                고객의 주문이 등록되면
+                이곳에서 확인할 수 있습니다.
+            </p>
+
+        </section>
+
+    <?php else: ?>
+
+        <section class="admin-order-list">
 
             <?php while ($order = $orders->fetch_assoc()): ?>
 
-                <div class="product-card">
+                <?php
+                $orderId = (int)$order['id'];
 
-                    <h3>
-                        주문 #<?= (int)$order['id'] ?>
-                    </h3>
+                $statuses = [
+                    'pending',
+                    'paid',
+                    'shipped',
+                    'completed',
+                    'cancelled'
+                ];
+                ?>
 
-                    <p>
-                        주문자:
-                        <?= htmlspecialchars($order['username']) ?>
-                    </p>
+                <article class="admin-order-card">
 
-                    <p>
-                        상품 금액:
-                        <?= number_format($order['subtotal_amount']) ?>원
-                    </p>
+                    <!-- 주문 기본 정보 -->
 
-                    <?php if ($order['coupon_code']): ?>
+                    <div class="admin-order-card-heading">
 
-                        <p>
-                            쿠폰:
-                            <?= htmlspecialchars($order['coupon_code']) ?>
-                        </p>
+                        <div>
 
-                        <p>
-                            할인:
-                            -<?= number_format($order['discount_amount']) ?>원
-                        </p>
+                            <span class="admin-order-date">
 
-                    <?php endif; ?>
+                                <?= htmlspecialchars(
+                                    $order['created_at'],
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>
 
-                    <p>
-                        <strong>
-                            최종 결제 금액:
-                            <?= number_format($order['total_amount']) ?>원
-                        </strong>
-                    </p>
+                            </span>
 
-                    <p>
-                        주문시간:
-                        <?= htmlspecialchars($order['created_at']) ?>
-                    </p>
+                            <h3>
+                                주문번호
+                                #<?= sprintf('%06d', $orderId) ?>
+                            </h3>
 
+                            <p>
+                                주문자:
+                                <?= htmlspecialchars(
+                                    $order['username'],
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>
+                            </p>
 
-                    <form method="post">
+                        </div>
 
-                        <input
-                            type="hidden"
-                            name="order_id"
-                            value="<?= (int)$order['id'] ?>"
-                        >
+                        <span class="order-status <?= getOrderStatusClass($order['status']) ?>">
 
-                        <label>
-                            주문 상태:
+                            <?= getOrderStatusLabel(
+                                $order['status']
+                            ) ?>
 
-                            <select name="status">
+                        </span>
 
-                                <?php
-                                $statuses = [
-                                    'pending',
-                                    'paid',
-                                    'shipped',
-                                    'completed',
-                                    'cancelled'
-                                ];
-                                ?>
+                    </div>
 
-                                <?php foreach ($statuses as $status): ?>
+                    <div class="admin-order-card-body">
 
-                                    <option
-                                        value="<?= $status ?>"
-                                        <?= $order['status'] === $status ? 'selected' : '' ?>
-                                    >
-                                        <?= $status ?>
-                                    </option>
+                        <!-- 주문 금액 -->
 
-                                <?php endforeach; ?>
+                        <div class="admin-order-payment">
 
-                            </select>
+                            <h4>주문 정보</h4>
 
-                        </label>
+                            <div class="admin-order-line">
 
-                        <button
-                            class="button"
-                            type="submit"
-                        >
-                            상태 변경
-                        </button>
+                                <span>상품 금액</span>
 
-                    </form>
+                                <strong>
+                                    <?= number_format(
+                                        $order['subtotal_amount']
+                                    ) ?>원
+                                </strong>
 
-                </div>
+                            </div>
 
-                <br>
+                            <?php if ($order['coupon_code']): ?>
+
+                                <div class="admin-order-line">
+
+                                    <span>적용 쿠폰</span>
+
+                                    <strong class="order-coupon">
+
+                                        <?= htmlspecialchars(
+                                            $order['coupon_code'],
+                                            ENT_QUOTES,
+                                            'UTF-8'
+                                        ) ?>
+
+                                    </strong>
+
+                                </div>
+
+                            <?php endif; ?>
+
+                            <div class="admin-order-line">
+
+                                <span>할인 금액</span>
+
+                                <strong class="order-discount">
+
+                                    -<?= number_format(
+                                        $order['discount_amount']
+                                    ) ?>원
+
+                                </strong>
+
+                            </div>
+
+                            <div class="admin-order-total">
+
+                                <span>최종 주문 금액</span>
+
+                                <strong>
+                                    <?= number_format(
+                                        $order['total_amount']
+                                    ) ?>원
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                        <!-- 상태 변경 -->
+
+                        <div class="admin-order-management">
+
+                            <h4>주문 상태 관리</h4>
+
+                            <p>
+                                변경할 주문 상태를 선택한 후
+                                저장해 주세요.
+                            </p>
+
+                            <form method="post"
+                                  class="admin-order-status-form">
+
+                                <input
+                                    type="hidden"
+                                    name="order_id"
+                                    value="<?= $orderId ?>"
+                                >
+
+                                <label for="status-<?= $orderId ?>">
+                                    주문 상태
+                                </label>
+
+                                <select
+                                    id="status-<?= $orderId ?>"
+                                    name="status"
+                                    required
+                                >
+
+                                    <?php foreach ($statuses as $status): ?>
+
+                                        <option
+                                            value="<?= htmlspecialchars(
+                                                $status,
+                                                ENT_QUOTES,
+                                                'UTF-8'
+                                            ) ?>"
+                                            <?= $order['status'] === $status
+                                                ? 'selected'
+                                                : '' ?>
+                                        >
+
+                                            <?= getOrderStatusLabel($status) ?>
+
+                                        </option>
+
+                                    <?php endforeach; ?>
+
+                                </select>
+
+                                <button
+                                    class="admin-primary-button"
+                                    type="submit"
+                                >
+
+                                    상태 변경 저장
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </article>
 
             <?php endwhile; ?>
 
-        <?php endif; ?>
+        </section>
 
-    </section>
+    <?php endif; ?>
 
 </main>
 
-
-<footer>
-    <p>VulnShop Security Lab</p>
-</footer>
+<?php require __DIR__ . '/config/footer.php'; ?>
 
 </body>
-
 </html>

@@ -1,0 +1,382 @@
+
+/* ============================
+   VulnShop Customer Center
+   ============================ */
+
+.board-page {
+    background: #ffffff;
+    color: #172033;
+    font-family: "Pretendard", "Malgun Gothic",
+                 Arial, sans-serif;
+}
+
+.board-page .container {
+    width: 92%;
+    max-width: 1320px;
+}
+
+.board-page a {
+    text-decoration: none;
+}
+
+.board-main {
+    min-height: 70vh;
+    padding-top: 30px;
+    padding-bottom: 80px;
+}
+
+.board-heading {
+    margin: 25px 0 35px;
+}
+
+.board-heading h2 {
+    margin: 12px 0;
+    font-size: 34px;
+    letter-spacing: -1px;
+}
+
+.board-heading p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* 안내 영역 */
+
+.board-notice {
+    padding: 22px 26px;
+    margin-bottom: 30px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 10px;
+}
+
+.board-notice strong {
+    color: #1d4ed8;
+    font-size: 15px;
+}
+
+.board-notice p {
+    margin: 10px 0 0;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #475569;
+}
+
+/* 게시글 목록 */
+
+.board-panel,
+.board-form-panel,
+.board-detail-panel {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.board-panel-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px;
+}
+
+.board-panel-heading h3 {
+    font-size: 21px;
+    margin: 0;
+}
+
+.board-panel-heading span {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.board-table-wrap {
+    overflow-x: auto;
+}
+
+.board-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 14px;
+}
+
+.board-table th {
+    padding: 18px;
+    background: #f8fafc;
+    color: #475569;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 13px;
+}
+
+.board-table td {
+    padding: 20px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #64748b;
+}
+
+.board-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.board-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.board-title-cell {
+    text-align: left;
+    width: 55%;
+    overflow-wrap: anywhere;
+}
+
+.board-title-cell a {
+    color: #172033;
+    font-weight: 600;
+}
+
+.board-title-cell a:hover {
+    color: #2563eb;
+}
+
+.board-number,
+.board-date {
+    white-space: nowrap;
+}
+
+.board-no-data {
+    text-align: center;
+    padding: 65px 20px !important;
+}
+
+/* 공통 버튼 */
+
+.board-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.board-actions p {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.board-primary-button,
+.board-outline-button {
+    display: inline-block;
+    padding: 13px 25px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+}
+
+.board-primary-button {
+    border: 1px solid #2563eb;
+    color: #ffffff;
+    background: #2563eb;
+}
+
+.board-primary-button:hover {
+    background: #1d4ed8;
+}
+
+.board-outline-button {
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    background: #ffffff;
+}
+
+.board-outline-button:hover {
+    border-color: #2563eb;
+    color: #2563eb;
+}
+
+/* 게시글 작성 */
+
+.board-form-panel {
+    padding: 35px;
+}
+
+.board-form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.board-field {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.board-field label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #334155;
+}
+
+.board-field input[type="text"],
+.board-field textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+.board-field textarea {
+    min-height: 230px;
+    resize: vertical;
+    line-height: 1.8;
+}
+
+.board-field input:focus,
+.board-field textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+}
+
+.board-field input[type="file"] {
+    padding: 16px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    background: #f8fafc;
+    font-size: 13px;
+}
+
+.board-help {
+    margin: 0;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.required-mark {
+    color: #dc2626;
+}
+
+.board-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 25px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.board-alert {
+    margin-bottom: 25px;
+    padding: 15px;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    background: #fef2f2;
+    color: #b91c1c;
+    font-size: 13px;
+}
+
+/* 게시글 상세 */
+
+.board-detail-heading {
+    padding: 35px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.board-detail-heading h2 {
+    margin: 15px 0 22px;
+    font-size: 27px;
+    overflow-wrap: anywhere;
+}
+
+.board-post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.board-detail-content {
+    min-height: 200px;
+    padding: 40px 35px;
+    line-height: 1.9;
+    font-size: 15px;
+    overflow-wrap: anywhere;
+}
+
+.board-attachments {
+    padding: 25px 35px;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+}
+
+.board-attachments h3 {
+    margin: 0 0 18px;
+    font-size: 17px;
+}
+
+.attachment-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    font-size: 13px;
+}
+
+.attachment-item a {
+    color: #2563eb;
+    overflow-wrap: anywhere;
+}
+
+.attachment-item a:hover {
+    text-decoration: underline;
+}
+
+.board-empty {
+    padding: 75px 20px;
+    text-align: center;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+.board-empty p {
+    color: #64748b;
+}
+
+/* 모바일 */
+
+@media (max-width: 600px) {
+    .board-heading h2 {
+        font-size: 27px;
+    }
+
+    .board-panel-heading,
+    .board-form-panel,
+    .board-detail-heading,
+    .board-detail-content {
+        padding: 20px;
+    }
+
+    .board-table {
+        min-width: 520px;
+    }
+
+    .board-post-meta {
+        gap: 10px;
+    }
+
+    .board-detail-heading h2 {
+        font-size: 22px;
+    }
+
+    .board-form-actions {
+        flex-wrap: wrap;
+    }
+}

@@ -1,0 +1,682 @@
+
+/* ============================
+   VulnShop Notice Board
+   ============================ */
+
+.notice-page {
+    background: #ffffff;
+    color: #172033;
+    font-family: "Pretendard", "Malgun Gothic",
+                 Arial, sans-serif;
+}
+
+.notice-page .container {
+    width: 92%;
+    max-width: 1320px;
+}
+
+.notice-page a {
+    text-decoration: none;
+}
+
+.notice-main {
+    min-height: 70vh;
+    padding-top: 30px;
+    padding-bottom: 80px;
+}
+
+/* 페이지 제목 */
+
+.notice-heading {
+    margin: 25px 0 35px;
+}
+
+.notice-heading h2 {
+    margin: 12px 0;
+    font-size: 34px;
+    color: #14233e;
+    letter-spacing: -1px;
+}
+
+.notice-heading p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* 공지 안내 */
+
+.notice-info {
+    padding: 23px 26px;
+    margin-bottom: 30px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 10px;
+}
+
+.notice-info strong {
+    color: #1d4ed8;
+    font-size: 15px;
+}
+
+.notice-info p {
+    margin: 10px 0 0;
+    color: #475569;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* 공지 목록 */
+
+.notice-panel {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.notice-panel-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 25px;
+}
+
+.notice-panel-heading h3 {
+    margin: 0;
+    font-size: 21px;
+}
+
+.notice-panel-heading span {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.notice-table-wrap {
+    overflow-x: auto;
+}
+
+.notice-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 14px;
+}
+
+.notice-table th {
+    padding: 18px;
+    background: #f8fafc;
+    color: #475569;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.notice-table td {
+    padding: 20px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #64748b;
+}
+
+.notice-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.notice-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.notice-number {
+    width: 100px;
+    white-space: nowrap;
+}
+
+.notice-title-cell {
+    width: 65%;
+    text-align: left;
+    overflow-wrap: anywhere;
+}
+
+.notice-title-cell a {
+    color: #172033;
+    font-weight: 600;
+}
+
+.notice-title-cell a:hover {
+    color: #2563eb;
+}
+
+.notice-date {
+    white-space: nowrap;
+}
+
+.notice-pin {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.notice-empty {
+    padding: 70px 20px !important;
+    color: #64748b;
+    text-align: center;
+}
+
+/* 관리 버튼 */
+
+.notice-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 25px;
+}
+
+.notice-primary-button {
+    display: inline-block;
+    padding: 13px 25px;
+    border: 1px solid #2563eb;
+    border-radius: 8px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.notice-primary-button:hover {
+    background: #1d4ed8;
+}
+
+/* 모바일 */
+
+@media (max-width: 600px) {
+
+    .notice-heading h2 {
+        font-size: 27px;
+    }
+
+    .notice-panel-heading {
+        padding: 20px;
+    }
+
+    .notice-table {
+        min-width: 490px;
+    }
+
+    .notice-number {
+        width: 65px;
+    }
+
+}
+
+/* ============================
+   Notice Detail Page
+   ============================ */
+
+.notice-detail-panel {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.notice-detail-heading {
+    padding: 35px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.notice-detail-heading h3 {
+    margin: 15px 0 22px;
+    color: #14233e;
+    font-size: 27px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.notice-detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 25px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.notice-detail-content {
+    min-height: 250px;
+    padding: 40px 35px;
+    color: #334155;
+    font-size: 15px;
+    line-height: 1.9;
+    overflow-wrap: anywhere;
+}
+
+.notice-outline-button {
+    display: inline-block;
+    padding: 13px 25px;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    color: #475569;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.notice-outline-button:hover {
+    border-color: #2563eb;
+    color: #2563eb;
+}
+
+.notice-detail-empty {
+    padding: 75px 20px;
+    text-align: center;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+.notice-detail-empty h3 {
+    font-size: 23px;
+    margin: 0 0 15px;
+}
+
+.notice-detail-empty p {
+    margin-bottom: 25px;
+    color: #64748b;
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+
+    .notice-detail-heading,
+    .notice-detail-content {
+        padding: 22px;
+    }
+
+    .notice-detail-heading h3 {
+        font-size: 21px;
+    }
+
+    .notice-detail-meta {
+        gap: 10px;
+    }
+
+}
+
+/* ============================
+   Admin Notice Management
+   ============================ */
+
+.notice-admin-panel,
+.notice-admin-list {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+
+.notice-admin-panel {
+    padding: 30px;
+}
+
+.notice-admin-panel > h3 {
+    margin: 0 0 25px;
+    font-size: 21px;
+    color: #14233e;
+}
+
+.notice-admin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.notice-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.notice-field label {
+    color: #334155;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.notice-field input,
+.notice-field textarea {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #172033;
+    font: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+.notice-field textarea {
+    resize: vertical;
+    line-height: 1.7;
+}
+
+.notice-field input:focus,
+.notice-field textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+}
+
+.notice-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #475569;
+    cursor: pointer;
+}
+
+.notice-checkbox input {
+    width: 16px;
+    height: 16px;
+    accent-color: #2563eb;
+}
+
+.notice-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.notice-admin-list {
+    overflow: hidden;
+}
+
+.notice-admin-item {
+    padding: 28px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.notice-admin-item-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.notice-admin-item-heading strong {
+    font-size: 16px;
+    color: #14233e;
+}
+
+.notice-admin-item-heading p {
+    margin: 10px 0 0;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.notice-admin-item-heading > a {
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.notice-delete-form {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.notice-danger-button {
+    padding: 12px 22px;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #dc2626;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.notice-danger-button:hover {
+    background: #fef2f2;
+}
+
+.notice-admin-empty {
+    margin: 0;
+    padding: 55px 20px;
+    text-align: center;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.notice-alert {
+    padding: 15px 20px;
+    margin-bottom: 25px;
+    border: 1px solid;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.notice-success {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #15803d;
+}
+
+.notice-error {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #b91c1c;
+}
+
+@media (max-width: 600px) {
+    .notice-admin-panel,
+    .notice-admin-item {
+        padding: 20px;
+    }
+
+    .notice-admin-item-heading {
+        flex-direction: column;
+    }
+
+    .notice-form-actions .notice-primary-button {
+        width: 100%;
+    }
+}
+
+/* ============================
+   Admin Notice Management
+   ============================ */
+
+.notice-admin-panel,
+.notice-admin-list {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+
+.notice-admin-panel {
+    padding: 30px;
+}
+
+.notice-admin-panel > h3 {
+    margin: 0 0 25px;
+    font-size: 21px;
+    color: #14233e;
+}
+
+.notice-admin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.notice-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.notice-field label {
+    color: #334155;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.notice-field input,
+.notice-field textarea {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #172033;
+    font: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+.notice-field textarea {
+    resize: vertical;
+    line-height: 1.7;
+}
+
+.notice-field input:focus,
+.notice-field textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+}
+
+.notice-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #475569;
+    cursor: pointer;
+}
+
+.notice-checkbox input {
+    width: 16px;
+    height: 16px;
+    accent-color: #2563eb;
+}
+
+.notice-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.notice-admin-list {
+    overflow: hidden;
+}
+
+.notice-admin-item {
+    padding: 28px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.notice-admin-item-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.notice-admin-item-heading strong {
+    font-size: 16px;
+    color: #14233e;
+}
+
+.notice-admin-item-heading p {
+    margin: 10px 0 0;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.notice-admin-item-heading > a {
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.notice-delete-form {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.notice-danger-button {
+    padding: 12px 22px;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #dc2626;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.notice-danger-button:hover {
+    background: #fef2f2;
+}
+
+.notice-admin-empty {
+    margin: 0;
+    padding: 55px 20px;
+    text-align: center;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.notice-alert {
+    padding: 15px 20px;
+    margin-bottom: 25px;
+    border: 1px solid;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.notice-success {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #15803d;
+}
+
+.notice-error {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #b91c1c;
+}
+
+@media (max-width: 600px) {
+    .notice-admin-panel,
+    .notice-admin-item {
+        padding: 20px;
+    }
+
+    .notice-admin-item-heading {
+        flex-direction: column;
+    }
+
+    .notice-form-actions .notice-primary-button {
+        width: 100%;
+    }
+}

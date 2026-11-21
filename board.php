@@ -17,119 +17,169 @@ $result = $conn->query("
 ");
 
 ?>
+
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>고객센터 - VulnShop</title>
 
-    <title>게시판 - VulnShop</title>
-
-    <link
-        rel="stylesheet"
-        href="/css/style.css"
-    >
-
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/products.css">
+    <link rel="stylesheet" href="/css/board.css">
 </head>
 
-<body>
+<body class="board-page">
 
-<header>
+<?php require __DIR__ . '/config/header.php'; ?>
 
-    <div class="container header-inner">
+<main class="container board-main">
 
-        <h1>
-            <a href="/">VulnShop</a>
-        </h1>
-
-        <?php require __DIR__ . '/config/nav.php'; ?>
-
+    <div class="breadcrumb">
+        <a href="/">홈</a>
+        <span>/</span>
+        <span>고객센터</span>
     </div>
 
-</header>
+    <section class="board-heading">
+        <span class="section-label">
+            VULNSHOP CUSTOMER CENTER
+        </span>
 
-
-<main class="container">
-
-    <section class="hero">
-
-        <h2>게시판</h2>
+        <h2>고객센터</h2>
 
         <p>
-            VulnShop 사용자 게시판입니다.
+            VulnShop 상품 및 서비스 관련 문의를
+            자유롭게 남겨주세요.
         </p>
+    </section>
+
+    <section class="board-notice">
+        <strong>문의 게시판 안내</strong>
+
+        <p>
+            게시글은 누구나 확인할 수 있으며,
+            로그인한 회원은 문의 글과 첨부파일을
+            등록할 수 있습니다.
+        </p>
+    </section>
+
+    <section class="board-panel">
+
+        <div class="board-panel-heading">
+            <h3>문의 게시판</h3>
+
+            <span>
+                총 <?= (int)$result->num_rows ?>건
+            </span>
+        </div>
+
+        <div class="board-table-wrap">
+
+            <table class="board-table">
+
+                <thead>
+                    <tr>
+                        <th scope="col">번호</th>
+                        <th scope="col">제목</th>
+                        <th scope="col">작성자</th>
+                        <th scope="col">작성일</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                <?php if ($result->num_rows === 0): ?>
+
+                    <tr>
+                        <td colspan="4" class="board-no-data">
+                            아직 등록된 게시글이 없습니다.
+                        </td>
+                    </tr>
+
+                <?php else: ?>
+
+                    <?php while ($post = $result->fetch_assoc()): ?>
+
+                        <tr>
+
+                            <td class="board-number">
+                                <?= (int)$post['id'] ?>
+                            </td>
+
+                            <td class="board-title-cell">
+
+                                <a href="/board-detail.php?id=<?= (int)$post['id'] ?>">
+
+                                    <?= htmlspecialchars(
+                                        $post['title'],
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?>
+
+                                </a>
+
+                            </td>
+
+                            <td>
+                                <?= htmlspecialchars(
+                                    $post['username'],
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>
+                            </td>
+
+                            <td class="board-date">
+                                <?= htmlspecialchars(
+                                    $post['created_at'],
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>
+                            </td>
+
+                        </tr>
+
+                    <?php endwhile; ?>
+
+                <?php endif; ?>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+    <div class="board-actions">
 
         <?php if (isset($_SESSION['user_id'])): ?>
 
-            <a
-                class="button"
-                href="/board-write.php"
-            >
-                글쓰기
+            <a class="board-primary-button"
+               href="/board-write.php">
+                문의 작성하기
+            </a>
+
+        <?php else: ?>
+
+            <p>문의 작성은 로그인 후 이용할 수 있습니다.</p>
+
+            <a class="board-primary-button"
+               href="/login.php">
+                로그인
             </a>
 
         <?php endif; ?>
 
-    </section>
-
-
-    <section class="hero">
-
-        <?php if ($result->num_rows === 0): ?>
-
-            <p>
-                등록된 게시글이 없습니다.
-            </p>
-
-        <?php else: ?>
-
-            <?php while ($post = $result->fetch_assoc()): ?>
-
-                <div class="product-card">
-
-                    <h3>
-
-                        <a
-                            href="/board-detail.php?id=<?= (int)$post['id'] ?>"
-                        >
-                            <?= htmlspecialchars($post['title']) ?>
-                        </a>
-
-                    </h3>
-
-                    <p>
-                        작성자:
-                        <?= htmlspecialchars($post['username']) ?>
-                    </p>
-
-                    <p>
-                        작성시간:
-                        <?= htmlspecialchars($post['created_at']) ?>
-                    </p>
-
-                </div>
-
-                <br>
-
-            <?php endwhile; ?>
-
-        <?php endif; ?>
-
-    </section>
+    </div>
 
 </main>
 
-
-<footer>
-    <p>VulnShop Security Lab</p>
-</footer>
+<?php require __DIR__ . '/config/footer.php'; ?>
 
 </body>
-
 </html>

@@ -214,128 +214,132 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>문의 작성 - VulnShop</title>
 
-    <title>글쓰기 - VulnShop</title>
-
-    <link
-        rel="stylesheet"
-        href="/css/style.css"
-    >
-
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/products.css">
+    <link rel="stylesheet" href="/css/board.css">
 </head>
 
-<body>
+<body class="board-page">
 
-<header>
+<?php require __DIR__ . '/config/header.php'; ?>
 
-    <div class="container header-inner">
+<main class="container board-main">
 
-        <h1>
-            <a href="/">VulnShop</a>
-        </h1>
-
-        <?php require __DIR__ . '/config/nav.php'; ?>
-
+    <div class="breadcrumb">
+        <a href="/">홈</a>
+        <span>/</span>
+        <a href="/board.php">고객센터</a>
+        <span>/</span>
+        <span>문의 작성</span>
     </div>
 
-</header>
+    <section class="board-heading">
+        <span class="section-label">
+            VULNSHOP CUSTOMER CENTER
+        </span>
 
+        <h2>문의 작성</h2>
 
-<main class="container">
+        <p>
+            문의하실 내용을 작성해 주세요.
+        </p>
+    </section>
 
-    <section class="hero">
-
-        <h2>게시글 작성</h2>
+    <section class="board-form-panel">
 
         <?php if ($error): ?>
 
-            <p style="color:red;">
-                <?= htmlspecialchars($error) ?>
-            </p>
+            <div class="board-alert" role="alert">
+                <?= htmlspecialchars(
+                    $error,
+                    ENT_QUOTES,
+                    'UTF-8'
+                ) ?>
+            </div>
 
         <?php endif; ?>
 
+        <form method="post"
+              enctype="multipart/form-data"
+              class="board-form">
 
-        <form
-            method="post"
-            enctype="multipart/form-data"
-        >
+            <div class="board-field">
 
-            <p>
-
-                <label>
-
-                    제목<br>
-
-                    <input
-                        type="text"
-                        name="title"
-                        size="60"
-                        required
-                    >
-
+                <label for="post-title">
+                    제목 <span class="required-mark">*</span>
                 </label>
 
-            </p>
+                <input
+                    type="text"
+                    id="post-title"
+                    name="title"
+                    placeholder="문의 제목을 입력해 주세요."
+                    required
+                >
 
+            </div>
 
-            <p>
+            <div class="board-field">
 
-                <label>
-
-                    내용<br>
-
-                    <textarea
-                        name="content"
-                        rows="12"
-                        cols="70"
-                        required
-                    ></textarea>
-
+                <label for="post-content">
+                    문의 내용
+                    <span class="required-mark">*</span>
                 </label>
 
-            </p>
+                <textarea
+                    id="post-content"
+                    name="content"
+                    rows="12"
+                    placeholder="문의하실 내용을 자세히 작성해 주세요."
+                    required
+                ></textarea>
 
+            </div>
 
-            <p>
+            <div class="board-field">
 
-                <label>
-
-                    첨부파일<br>
-
-                    <input
-                        type="file"
-                        name="attachment"
-                        accept=".jpg,.jpeg,.png,.pdf,.txt"
-                    >
-
+                <label for="post-attachment">
+                    첨부파일
                 </label>
 
-            </p>
+                <input
+                    type="file"
+                    id="post-attachment"
+                    name="attachment"
+                    accept=".jpg,.jpeg,.png,.pdf,.txt"
+                >
 
-            <p>
-                jpg, jpeg, png, pdf, txt /
-                최대 2MB
-            </p>
+                <p class="board-help">
+                    jpg, jpeg, png, pdf, txt /
+                    최대 2MB
+                </p>
 
+            </div>
 
-            <button
-                class="button"
-                type="submit"
-            >
-                등록
-            </button>
+            <div class="board-form-actions">
+
+                <a class="board-outline-button"
+                   href="/board.php">
+                    취소
+                </a>
+
+                <button class="board-primary-button"
+                        type="submit">
+                    문의 등록
+                </button>
+
+            </div>
 
         </form>
 
@@ -343,11 +347,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 </main>
 
-
-<footer>
-    <p>VulnShop Security Lab</p>
-</footer>
+<?php require __DIR__ . '/config/footer.php'; ?>
 
 </body>
-
 </html>

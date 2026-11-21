@@ -287,102 +287,195 @@ try {
 }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="ko">
 
 <head>
-
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>주문 완료 - VulnShop</title>
 
-    <link
-        rel="stylesheet"
-        href="/css/style.css"
-    >
-
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/products.css">
+    <link rel="stylesheet" href="/css/orders.css">
 </head>
 
-<body>
+<body class="orders-page">
 
-<header>
+<?php require __DIR__ . '/config/header.php'; ?>
 
-    <div class="container header-inner">
+<main class="container orders-main">
 
-        <h1>
-            <a href="/">VulnShop</a>
-        </h1>
-
-        <?php require __DIR__ . '/config/nav.php'; ?>
-
+    <div class="breadcrumb">
+        <a href="/">홈</a>
+        <span>/</span>
+        <span>주문 완료</span>
     </div>
 
-</header>
+    <section class="order-complete-card">
 
+        <!-- 주문 완료 메시지 -->
 
-<main class="container">
+        <div class="complete-heading">
 
-    <section class="hero">
+            <div class="complete-icon">
+                &#10003;
+            </div>
 
-        <h2>주문이 완료되었습니다.</h2>
+            <span class="section-label">
+                ORDER COMPLETE
+            </span>
 
-        <p>
-            주문번호:
-            <?= (int)$orderId ?>
-        </p>
-
-        <p>
-            상품 금액:
-            <?= number_format($subtotalAmount) ?>원
-        </p>
-
-        <?php if ($couponCode !== ''): ?>
+            <h2>주문이 완료되었습니다.</h2>
 
             <p>
-                적용 쿠폰:
-                <?= htmlspecialchars($couponCode) ?>
+                VulnShop을 이용해 주셔서 감사합니다.
+                <br>
+                주문내역에서 주문 진행 상태를 확인하실 수 있습니다.
             </p>
 
-            <p>
-                할인:
-                <?= $discountPercent ?>%
-                (-<?= number_format($discountAmount) ?>원)
-            </p>
+        </div>
 
-        <?php endif; ?>
+        <!-- 주문 진행 단계 -->
 
-        <p>
-            최종 결제 금액:
-            <strong>
-                <?= number_format($totalAmount) ?>원
-            </strong>
-        </p>
+        <div class="complete-steps">
 
-        <p>
-            주문 상태: pending
-        </p>
+            <span>01 장바구니</span>
 
-        <a
-            class="button"
-            href="/orders.php"
-        >
-            주문내역 확인
-        </a>
+            <span class="complete-arrow">›</span>
+
+            <span>02 주문</span>
+
+            <span class="complete-arrow">›</span>
+
+            <span class="complete-active">
+                03 주문 완료
+            </span>
+
+        </div>
+
+        <!-- 주문 정보 -->
+
+        <div class="complete-summary">
+
+            <h3>주문 정보</h3>
+
+            <div class="order-info-line">
+
+                <span>주문번호</span>
+
+                <strong>
+                    #<?= sprintf('%06d', (int)$orderId) ?>
+                </strong>
+
+            </div>
+
+            <div class="order-info-line">
+
+                <span>상품 금액</span>
+
+                <strong>
+                    <?= number_format($subtotalAmount) ?>원
+                </strong>
+
+            </div>
+
+            <?php if ($couponCode !== ''): ?>
+
+                <div class="order-info-line">
+
+                    <span>적용 쿠폰</span>
+
+                    <strong class="order-coupon">
+
+                        <?= htmlspecialchars($couponCode) ?>
+
+                    </strong>
+
+                </div>
+
+                <div class="order-info-line">
+
+                    <span>할인율</span>
+
+                    <strong>
+
+                        <?= htmlspecialchars((string)$discountPercent) ?>%
+
+                    </strong>
+
+                </div>
+
+            <?php endif; ?>
+
+            <div class="order-info-line">
+
+                <span>할인 금액</span>
+
+                <strong class="order-discount">
+
+                    -<?= number_format($discountAmount) ?>원
+
+                </strong>
+
+            </div>
+
+            <div class="payment-divider"></div>
+
+            <div class="payment-total">
+
+                <span>최종 주문 금액</span>
+
+                <strong>
+
+                    <?= number_format($totalAmount) ?>원
+
+                </strong>
+
+            </div>
+
+            <div class="payment-status">
+
+                <span>주문 상태</span>
+
+                <span class="order-status status-pending">
+                    결제 대기
+                </span>
+
+            </div>
+
+        </div>
+
+        <!-- 페이지 이동 버튼 -->
+
+        <div class="complete-actions">
+
+            <a class="order-detail-button"
+               href="/products.php">
+
+                쇼핑 계속하기
+
+            </a>
+
+            <a class="order-primary-button"
+               href="/orders.php">
+
+                주문내역 확인
+
+            </a>
+
+        </div>
 
     </section>
 
 </main>
 
-
-<footer>
-    <p>VulnShop Security Lab</p>
-</footer>
+<?php require __DIR__ . '/config/footer.php'; ?>
 
 </body>
-
 </html>

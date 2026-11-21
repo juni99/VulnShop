@@ -3,6 +3,7 @@
 session_start();
 
 require_once __DIR__ . '/config/db.php';
+require_once __DIR__ . '/config/product-image.php';
 
 /*
  * 관리자 권한 확인
@@ -248,281 +249,440 @@ $products = $conn->query("
 ");
 
 ?>
+
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>상품 관리 - VulnShop</title>
 
-    <link
-        rel="stylesheet"
-        href="/css/style.css"
-    >
-
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/products.css">
+    <link rel="stylesheet" href="/css/admin.css">
 </head>
 
-<body>
+<body class="admin-page">
 
-<header>
+<?php require __DIR__ . '/config/header.php'; ?>
 
-    <div class="container header-inner">
+<main class="container admin-main">
 
-        <h1>
-            <a href="/">VulnShop</a>
-        </h1>
-
-        <?php require __DIR__ . '/config/nav.php'; ?>
-
+    <div class="breadcrumb">
+        <a href="/">홈</a>
+        <span>/</span>
+        <a href="/admin.php">관리자</a>
+        <span>/</span>
+        <span>상품 관리</span>
     </div>
 
-</header>
-
-
-<main class="container">
-
-    <section class="hero">
+    <section class="admin-heading">
+        <span class="section-label">
+            VULNSHOP ADMINISTRATION
+        </span>
 
         <h2>상품 관리</h2>
 
-        <a
-            class="button"
-            href="/admin.php"
-        >
-            관리자 대시보드
-        </a>
-
-        <?php if ($message): ?>
-
-            <p style="color:green;">
-                <?= htmlspecialchars($message) ?>
-            </p>
-
-        <?php endif; ?>
-
-        <?php if ($error): ?>
-
-            <p style="color:red;">
-                <?= htmlspecialchars($error) ?>
-            </p>
-
-        <?php endif; ?>
-
+        <p>
+            상품을 등록하고 판매 가격, 재고 및
+            상품 정보를 관리할 수 있습니다.
+        </p>
     </section>
 
+    <div class="admin-top-actions">
+        <a class="admin-secondary-button"
+           href="/admin.php">
+            관리자 대시보드로 돌아가기
+        </a>
+    </div>
 
-    <section class="hero">
+    <?php if ($message): ?>
+        <div class="admin-alert admin-alert-success"
+             role="status">
+            <?= htmlspecialchars(
+                $message,
+                ENT_QUOTES,
+                'UTF-8'
+            ) ?>
+        </div>
+    <?php endif; ?>
 
-        <h2>새 상품 등록</h2>
+    <?php if ($error): ?>
+        <div class="admin-alert admin-alert-error"
+             role="alert">
+            <?= htmlspecialchars(
+                $error,
+                ENT_QUOTES,
+                'UTF-8'
+            ) ?>
+        </div>
+    <?php endif; ?>
 
-        <form method="post">
+    <!-- 신규 상품 등록 -->
 
-            <input
-                type="hidden"
-                name="action"
-                value="add"
-            >
+    <section class="admin-form-panel">
 
-            <p>
-                상품명<br>
+        <div class="admin-panel-heading">
+            <div>
+                <h3>새 상품 등록</h3>
+                <p>새로운 상품의 정보를 입력해 주세요.</p>
+            </div>
+        </div>
+
+        <form method="post" class="admin-product-form">
+
+            <input type="hidden"
+                   name="action"
+                   value="add">
+
+            <div class="admin-field">
+                <label for="new-name">상품명</label>
+
                 <input
+                    id="new-name"
                     type="text"
                     name="name"
+                    placeholder="상품명을 입력해 주세요."
                     required
                 >
-            </p>
+            </div>
 
-            <p>
-                설명<br>
+            <div class="admin-field">
+                <label for="new-description">
+                    상품 설명
+                </label>
+
                 <textarea
+                    id="new-description"
                     name="description"
                     rows="4"
-                    cols="60"
+                    placeholder="상품의 특징과 상세 정보를 입력해 주세요."
                 ></textarea>
-            </p>
+            </div>
 
-            <p>
-                가격<br>
-                <input
-                    type="number"
-                    name="price"
-                    min="0"
-                    step="0.01"
-                    required
-                >
-            </p>
+            <div class="admin-field-grid">
 
-            <p>
-                재고<br>
-                <input
-                    type="number"
-                    name="stock"
-                    min="0"
-                    required
-                >
-            </p>
+                <div class="admin-field">
+                    <label for="new-price">
+                        판매 가격 (원)
+                    </label>
 
-            <p>
-                이미지 파일명<br>
+                    <input
+                        id="new-price"
+                        type="number"
+                        name="price"
+                        min="0"
+                        step="0.01"
+                        placeholder="0"
+                        required
+                    >
+                </div>
+
+                <div class="admin-field">
+                    <label for="new-stock">
+                        재고 수량
+                    </label>
+
+                    <input
+                        id="new-stock"
+                        type="number"
+                        name="stock"
+                        min="0"
+                        placeholder="0"
+                        required
+                    >
+                </div>
+
+            </div>
+
+            <div class="admin-field">
+                <label for="new-image">
+                    이미지 파일명
+                </label>
+
                 <input
+                    id="new-image"
                     type="text"
                     name="image"
-                    placeholder="product.jpg"
+                    placeholder="example.webp"
                 >
-            </p>
 
-            <button
-                class="button"
-                type="submit"
-            >
-                상품 등록
-            </button>
+                <p class="admin-field-help">
+                    images/products/ 폴더에 있는
+                    WebP 파일명을 입력해 주세요.
+                </p>
+            </div>
+
+            <div class="admin-form-actions">
+                <button class="admin-primary-button"
+                        type="submit">
+                    상품 등록
+                </button>
+            </div>
 
         </form>
 
     </section>
 
+    <!-- 등록된 상품 -->
 
-    <section class="hero">
+    <div class="admin-section-heading">
+        <h3>등록 상품</h3>
 
-        <h2>등록 상품</h2>
+        <span>
+            총 <?= (int)$products->num_rows ?>개
+        </span>
+    </div>
 
-        <?php while ($product = $products->fetch_assoc()): ?>
+    <?php if ($products->num_rows === 0): ?>
 
-            <div class="product-card">
+        <section class="admin-empty">
+            <h3>등록된 상품이 없습니다.</h3>
+            <p>상단에서 첫 상품을 등록해 주세요.</p>
+        </section>
 
-                <form method="post">
+    <?php else: ?>
 
-                    <input
-                        type="hidden"
-                        name="action"
-                        value="update"
-                    >
+        <section class="admin-products-list">
 
-                    <input
-                        type="hidden"
-                        name="product_id"
-                        value="<?= (int)$product['id'] ?>"
-                    >
+            <?php while ($product = $products->fetch_assoc()): ?>
 
-                    <h3>
-                        상품 #<?= (int)$product['id'] ?>
-                    </h3>
+                <?php
+                $productId = (int)$product['id'];
 
-                    <p>
-                        상품명<br>
+                $imageUrl = getProductImage(
+                    $product['image'] ?? null
+                );
+                ?>
+
+                <article class="admin-product-card">
+
+                    <div class="admin-product-card-heading">
+
+                        <div class="admin-product-preview">
+
+                            <div class="admin-product-image">
+
+                                <?php if ($imageUrl !== null): ?>
+
+                                    <img
+                                        src="<?= htmlspecialchars(
+                                            $imageUrl,
+                                            ENT_QUOTES,
+                                            'UTF-8'
+                                        ) ?>"
+                                        alt="<?= htmlspecialchars(
+                                            $product['name'],
+                                            ENT_QUOTES,
+                                            'UTF-8'
+                                        ) ?>"
+                                        width="1000"
+                                        height="1000"
+                                        loading="lazy"
+                                    >
+
+                                <?php else: ?>
+
+                                    <span>이미지 없음</span>
+
+                                <?php endif; ?>
+
+                            </div>
+
+                            <div class="admin-product-summary">
+
+                                <span class="admin-product-id">
+                                    상품 #<?= $productId ?>
+                                </span>
+
+                                <h4>
+                                    <?= htmlspecialchars(
+                                        $product['name'],
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?>
+                                </h4>
+
+                                <p>
+                                    판매가
+                                    <?= number_format(
+                                        (float)$product['price']
+                                    ) ?>원
+                                </p>
+
+                                <p>
+                                    재고
+                                    <?= (int)$product['stock'] ?>개
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <a class="admin-view-button"
+                           href="/products.php?id=<?= $productId ?>">
+                            상품 보기
+                        </a>
+
+                    </div>
+
+                    <!-- 상품 수정 -->
+
+                    <form method="post"
+                          class="admin-product-form admin-edit-form">
 
                         <input
-                            type="text"
-                            name="name"
-                            value="<?= htmlspecialchars($product['name']) ?>"
-                            required
+                            type="hidden"
+                            name="action"
+                            value="update"
                         >
-                    </p>
-
-                    <p>
-                        설명<br>
-
-                        <textarea
-                            name="description"
-                            rows="4"
-                            cols="60"
-                        ><?= htmlspecialchars($product['description']) ?></textarea>
-                    </p>
-
-                    <p>
-                        가격<br>
 
                         <input
-                            type="number"
-                            name="price"
-                            min="0"
-                            step="0.01"
-                            value="<?= htmlspecialchars($product['price']) ?>"
-                            required
+                            type="hidden"
+                            name="product_id"
+                            value="<?= $productId ?>"
                         >
-                    </p>
 
-                    <p>
-                        재고<br>
+                        <div class="admin-field">
+                            <label for="name-<?= $productId ?>">
+                                상품명
+                            </label>
+
+                            <input
+                                id="name-<?= $productId ?>"
+                                type="text"
+                                name="name"
+                                value="<?= htmlspecialchars(
+                                    $product['name'],
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>"
+                                required
+                            >
+                        </div>
+
+                        <div class="admin-field">
+                            <label for="description-<?= $productId ?>">
+                                상품 설명
+                            </label>
+
+                            <textarea
+                                id="description-<?= $productId ?>"
+                                name="description"
+                                rows="3"
+                            ><?= htmlspecialchars(
+                                $product['description'] ?? '',
+                                ENT_QUOTES,
+                                'UTF-8'
+                            ) ?></textarea>
+                        </div>
+
+                        <div class="admin-field-grid">
+
+                            <div class="admin-field">
+                                <label for="price-<?= $productId ?>">
+                                    판매 가격 (원)
+                                </label>
+
+                                <input
+                                    id="price-<?= $productId ?>"
+                                    type="number"
+                                    name="price"
+                                    min="0"
+                                    step="0.01"
+                                    value="<?= htmlspecialchars(
+                                        (string)$product['price'],
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?>"
+                                    required
+                                >
+                            </div>
+
+                            <div class="admin-field">
+                                <label for="stock-<?= $productId ?>">
+                                    재고 수량
+                                </label>
+
+                                <input
+                                    id="stock-<?= $productId ?>"
+                                    type="number"
+                                    name="stock"
+                                    min="0"
+                                    value="<?= (int)$product['stock'] ?>"
+                                    required
+                                >
+                            </div>
+
+                        </div>
+
+                        <div class="admin-field">
+                            <label for="image-<?= $productId ?>">
+                                이미지 파일명
+                            </label>
+
+                            <input
+                                id="image-<?= $productId ?>"
+                                type="text"
+                                name="image"
+                                value="<?= htmlspecialchars(
+                                    $product['image'] ?? '',
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>"
+                                placeholder="example.webp"
+                            >
+                        </div>
+
+                        <div class="admin-form-actions">
+                            <button
+                                type="submit"
+                                class="admin-primary-button">
+                                상품 수정
+                            </button>
+                        </div>
+
+                    </form>
+
+                    <!-- 상품 삭제 -->
+
+                    <form method="post"
+                          class="admin-delete-form">
 
                         <input
-                            type="number"
-                            name="stock"
-                            min="0"
-                            value="<?= (int)$product['stock'] ?>"
-                            required
+                            type="hidden"
+                            name="action"
+                            value="delete"
                         >
-                    </p>
-
-                    <p>
-                        이미지 파일명<br>
 
                         <input
-                            type="text"
-                            name="image"
-                            value="<?= htmlspecialchars($product['image'] ?? '') ?>"
+                            type="hidden"
+                            name="product_id"
+                            value="<?= $productId ?>"
                         >
-                    </p>
 
-                    <button
-                        class="button"
-                        type="submit"
-                    >
-                        수정
-                    </button>
+                        <button
+                            class="admin-danger-button"
+                            type="submit">
+                            상품 삭제
+                        </button>
 
-                </form>
+                    </form>
 
+                </article>
 
-                <br>
+            <?php endwhile; ?>
 
+        </section>
 
-                <form method="post">
-
-                    <input
-                        type="hidden"
-                        name="action"
-                        value="delete"
-                    >
-
-                    <input
-                        type="hidden"
-                        name="product_id"
-                        value="<?= (int)$product['id'] ?>"
-                    >
-
-                    <button
-                        class="button"
-                        type="submit"
-                    >
-                        삭제
-                    </button>
-
-                </form>
-
-            </div>
-
-            <br>
-
-        <?php endwhile; ?>
-
-    </section>
+    <?php endif; ?>
 
 </main>
 
-
-<footer>
-    <p>VulnShop Security Lab</p>
-</footer>
+<?php require __DIR__ . '/config/footer.php'; ?>
 
 </body>
-
 </html>

@@ -3,6 +3,7 @@
 session_start();
 
 require_once __DIR__ . '/config/db.php';
+require_once __DIR__ . '/config/product-image.php';
 
 $productId = $_GET['id'] ?? 0;
 $message = '';
@@ -153,330 +154,451 @@ $product = $result ? $result->fetch_assoc() : null;
 }
 
 ?>
+
+
 <!DOCTYPE html>
 <html lang="ko">
 
 <head>
-
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>상품 - VulnShop</title>
 
-    <link
-        rel="stylesheet"
-        href="/css/style.css"
-    >
-
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/products.css">
 </head>
 
-<body>
+<body class="catalog-page">
 
-<header>
+<?php require __DIR__ . '/config/header.php'; ?>
 
-    <div class="container header-inner">
+<main class="container catalog-main">
 
-        <h1>
-            <a href="/">VulnShop</a>
-        </h1>
+    <div class="breadcrumb">
+        <a href="/">홈</a>
+        <span>/</span>
+        <a href="/products.php">전체 상품</a>
 
-        <?php require __DIR__ . '/config/nav.php'; ?>
-
+        <?php if (!empty($product)): ?>
+            <span>/</span>
+            <span>
+                <?= htmlspecialchars($product['name']) ?>
+            </span>
+        <?php endif; ?>
     </div>
 
-</header>
+    <?php if ($productId <= 0): ?>
 
+        <!-- 전체 상품 목록 -->
 
-<main class="container">
+        <section class="catalog-heading">
 
-<?php if ($productId <= 0): ?>
+            <span class="section-label">
+                VULNSHOP COLLECTION
+            </span>
 
-    <section class="hero">
+            <h2>전체 상품</h2>
 
-        <h2>전체 상품</h2>
+            <p>
+                당신의 디지털 라이프를 위한
+                다양한 제품을 만나보세요.
+            </p>
 
-        <p>
-            VulnShop에서 판매 중인 상품입니다.
-        </p>
+        </section>
 
-    </section>
+        <section>
 
-    <section>
+            <div class="product-grid">
 
-        <div class="product-grid">
+                <?php while ($row = $result->fetch_assoc()): ?>
 
-        <?php while ($row = $result->fetch_assoc()): ?>
+                    <?php
+                    $imageUrl = getProductImage(
+                        $row['image'] ?? null
+                    );
+                    ?>
 
-            <div class="product-card">
+                    <article class="product-card">
 
-                <div class="product-image">
-                    <?= htmlspecialchars($row['name']) ?>
-                </div>
+                        <a class="product-image"
+                           href="/products.php?id=<?= (int)$row['id'] ?>">
 
-                <h3>
-                    <?= htmlspecialchars($row['name']) ?>
-                </h3>
+                            <?php if ($imageUrl !== null): ?>
 
-                <p>
-                    <?= htmlspecialchars($row['description']) ?>
-                </p>
+                                <img
+                                    src="<?= htmlspecialchars($imageUrl, ENT_QUOTES, 'UTF-8') ?>"
+                                    alt="<?= htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8') ?>"
+                                    width="1000"
+                                    height="1000"
+                                    loading="lazy"
+                                >
 
-                <p class="price">
-                    <?= number_format($row['price']) ?>원
-                </p>
+                            <?php else: ?>
 
-                <p>
-                    재고:
-                    <?= (int)$row['stock'] ?>개
-                </p>
+                                <span class="image-placeholder">
+                                    <?= htmlspecialchars($row['name']) ?>
+                                </span>
 
-                <a
-                    class="button"
-                    href="/products.php?id=<?= (int)$row['id'] ?>"
-                >
-                    상품 보기
-                </a>
+                            <?php endif; ?>
+
+                        </a>
+
+                        <div class="product-info">
+
+                            <span class="product-category">
+                                IT · DIGITAL
+                            </span>
+
+                            <h3>
+                                <?= htmlspecialchars($row['name']) ?>
+                            </h3>
+
+                            <p class="product-description">
+                                <?= htmlspecialchars($row['description'] ?? '') ?>
+                            </p>
+
+                            <p class="price">
+                                <?= number_format($row['price']) ?>원
+                            </p>
+
+                            <p class="stock-info">
+                                재고: <?= (int)$row['stock'] ?>개
+                            </p>
+
+                            <a class="button product-button"
+                               href="/products.php?id=<?= (int)$row['id'] ?>">
+                                상품 상세 보기
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                <?php endwhile; ?>
 
             </div>
 
-        <?php endwhile; ?>
+        </section>
 
-        </div>
+    <?php elseif (!$product): ?>
 
-    </section>
+        <!-- 상품이 존재하지 않는 경우 -->
 
+        <section class="empty-state">
 
-<?php elseif (!$product): ?>
+            <h2>상품을 찾을 수 없습니다.</h2>
 
-    <section class="hero">
+            <p>존재하지 않는 상품입니다.</p>
 
-        <h2>상품을 찾을 수 없습니다.</h2>
-
-        <a
-            class="button"
-            href="/products.php"
-        >
-            상품 목록
-        </a>
-
-    </section>
-
-
-<?php else: ?>
-
-    <section class="hero">
-
-        <h2>
-            <?= htmlspecialchars($product['name']) ?>
-        </h2>
-
-        <p>
-            <?= htmlspecialchars($product['description']) ?>
-        </p>
-
-        <p class="price">
-            <?= number_format($product['price']) ?>원
-        </p>
-
-        <p>
-            재고:
-            <?= (int)$product['stock'] ?>개
-        </p>
-
-
-        <form
-            method="post"
-            action="/cart.php"
-        >
-
-            <input
-                type="hidden"
-                name="action"
-                value="add"
-            >
-
-            <input
-                type="hidden"
-                name="product_id"
-                value="<?= (int)$product['id'] ?>"
-            >
-
-            <label>
-                수량:
-
-                <input
-                    type="number"
-                    name="quantity"
-                    value="1"
-                    min="1"
-                    max="<?= (int)$product['stock'] ?>"
-                >
-            </label>
-
-            <br><br>
-
-            <button
-                class="button"
-                type="submit"
-            >
-                장바구니 담기
-            </button>
-
-        </form>
-
-    </section>
-
-
-    <section class="hero">
-
-        <h2>상품 리뷰</h2>
-
-        <?php if ($message): ?>
-
-            <p style="color:green;">
-                <?= htmlspecialchars($message) ?>
-            </p>
-
-        <?php endif; ?>
-
-
-        <?php if ($error): ?>
-
-            <p style="color:red;">
-                <?= htmlspecialchars($error) ?>
-            </p>
-
-        <?php endif; ?>
-
-
-        <?php if (isset($_SESSION['user_id'])): ?>
-
-            <form method="post">
-
-                <input
-                    type="hidden"
-                    name="action"
-                    value="review"
-                >
-
-                <input
-                    type="hidden"
-                    name="product_id"
-                    value="<?= (int)$product['id'] ?>"
-                >
-
-                <p>
-                    <label>
-                        평점
-
-                        <select name="rating" required>
-                            <option value="5">5점</option>
-                            <option value="4">4점</option>
-                            <option value="3">3점</option>
-                            <option value="2">2점</option>
-                            <option value="1">1점</option>
-                        </select>
-                    </label>
-                </p>
-
-                <p>
-                    <label>
-                        리뷰 내용<br>
-
-                        <textarea
-                            name="content"
-                            rows="5"
-                            cols="50"
-                            required
-                        ></textarea>
-                    </label>
-                </p>
-
-                <button
-                    class="button"
-                    type="submit"
-                >
-                    리뷰 등록
-                </button>
-
-            </form>
-
-        <?php else: ?>
-
-            <p>
-                리뷰를 작성하려면 로그인이 필요합니다.
-            </p>
-
-            <a
-                class="button"
-                href="/login.php"
-            >
-                로그인
+            <a class="button" href="/products.php">
+                상품 목록으로 돌아가기
             </a>
 
-        <?php endif; ?>
+        </section>
 
-    </section>
+    <?php else: ?>
 
+        <!-- 상품 상세 페이지 -->
 
-    <section class="hero">
+        <?php
+        $imageUrl = getProductImage(
+            $product['image'] ?? null
+        );
 
-        <h2>등록된 리뷰</h2>
+        $stock = (int)$product['stock'];
+        ?>
 
-        <?php if ($reviews->num_rows === 0): ?>
+        <section class="product-detail-layout">
 
-            <p>
-                아직 등록된 리뷰가 없습니다.
-            </p>
+            <div class="detail-image">
 
-        <?php else: ?>
+                <?php if ($imageUrl !== null): ?>
 
-            <?php while ($review = $reviews->fetch_assoc()): ?>
+                    <img
+                        src="<?= htmlspecialchars($imageUrl, ENT_QUOTES, 'UTF-8') ?>"
+                        alt="<?= htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8') ?>"
+                        width="1000"
+                        height="1000"
+                    >
 
-                <div class="product-card">
+                <?php else: ?>
 
-                    <strong>
-                        <?= htmlspecialchars($review['username']) ?>
-                    </strong>
+                    <span class="image-placeholder">
+                        <?= htmlspecialchars($product['name']) ?>
+                    </span>
 
-                    <p>
-                        평점:
-                        <?= (int)$review['rating'] ?>/5
-                    </p>
+                <?php endif; ?>
 
-                    <p>
-                        <?= nl2br(
-                            htmlspecialchars($review['content'])
-                        ) ?>
-                    </p>
+            </div>
 
-                    <small>
-                        <?= htmlspecialchars($review['created_at']) ?>
-                    </small>
+            <div class="detail-info">
+
+                <span class="section-label">
+                    VULNSHOP COLLECTION
+                </span>
+
+                <h2>
+                    <?= htmlspecialchars($product['name']) ?>
+                </h2>
+
+                <p class="detail-description">
+                    <?= htmlspecialchars($product['description'] ?? '') ?>
+                </p>
+
+                <div class="detail-price">
+                    <?= number_format($product['price']) ?>원
+                </div>
+
+                <div class="detail-stock">
+
+                    <span>판매 상태</span>
+
+                    <?php if ($stock > 0): ?>
+
+                        <span class="stock-available">
+                            구매 가능 · 재고 <?= $stock ?>개
+                        </span>
+
+                    <?php else: ?>
+
+                        <span class="stock-unavailable">
+                            품절
+                        </span>
+
+                    <?php endif; ?>
 
                 </div>
 
-                <br>
+                <form class="purchase-form"
+                      method="post"
+                      action="/cart.php">
 
-            <?php endwhile; ?>
+                    <input type="hidden"
+                           name="action"
+                           value="add">
 
-        <?php endif; ?>
+                    <input type="hidden"
+                           name="product_id"
+                           value="<?= (int)$product['id'] ?>">
 
-    </section>
+                    <div class="quantity-control">
 
-<?php endif; ?>
+                        <label for="quantity">
+                            구매 수량
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quantity"
+                            name="quantity"
+                            value="1"
+                            min="1"
+                            max="<?= max(1, $stock) ?>"
+                            required
+                            <?= $stock <= 0 ? 'disabled' : '' ?>
+                        >
+
+                    </div>
+
+                    <button
+                        class="add-to-cart"
+                        type="submit"
+                        <?= $stock <= 0 ? 'disabled' : '' ?>
+                    >
+                        <?= $stock > 0
+                            ? '장바구니 담기'
+                            : '품절된 상품입니다.' ?>
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <!-- 상세 정보 이동 메뉴 -->
+
+        <div class="detail-tabs">
+
+            <a href="#product-description">
+                상품 상세 정보
+            </a>
+
+            <a href="#product-reviews">
+                상품 리뷰
+            </a>
+
+        </div>
+
+        <!-- 상품 설명 -->
+
+        <section class="detail-section"
+                 id="product-description">
+
+            <h2>상품 상세 정보</h2>
+
+            <p>
+                <?= nl2br(
+                    htmlspecialchars(
+                        $product['description'] ?? ''
+                    )
+                ) ?>
+            </p>
+
+        </section>
+
+        <!-- 리뷰 작성 -->
+
+        <section class="detail-section"
+                 id="product-reviews">
+
+            <h2>상품 리뷰 작성</h2>
+
+            <?php if ($message): ?>
+
+                <p style="color: #15803d;">
+                    <?= htmlspecialchars($message) ?>
+                </p>
+
+            <?php endif; ?>
+
+            <?php if ($error): ?>
+
+                <p style="color: #dc2626;">
+                    <?= htmlspecialchars($error) ?>
+                </p>
+
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['user_id'])): ?>
+
+                <form method="post">
+
+                    <input type="hidden"
+                           name="action"
+                           value="review">
+
+                    <input type="hidden"
+                           name="product_id"
+                           value="<?= (int)$product['id'] ?>">
+
+                    <p>
+                        <label>
+                            평점
+
+                            <select name="rating" required>
+                                <option value="5">★★★★★ 5점</option>
+                                <option value="4">★★★★☆ 4점</option>
+                                <option value="3">★★★☆☆ 3점</option>
+                                <option value="2">★★☆☆☆ 2점</option>
+                                <option value="1">★☆☆☆☆ 1점</option>
+                            </select>
+
+                        </label>
+                    </p>
+
+                    <p>
+                        <label>
+
+                            리뷰 내용
+
+                            <textarea
+                                name="content"
+                                rows="5"
+                                placeholder="상품에 대한 의견을 작성해 주세요."
+                                required
+                            ></textarea>
+
+                        </label>
+                    </p>
+
+                    <button class="button"
+                            type="submit">
+                        리뷰 등록
+                    </button>
+
+                </form>
+
+            <?php else: ?>
+
+                <p>
+                    리뷰를 작성하려면 로그인이 필요합니다.
+                </p>
+
+                <a class="button" href="/login.php">
+                    로그인
+                </a>
+
+            <?php endif; ?>
+
+        </section>
+
+        <!-- 등록된 리뷰 목록 -->
+
+        <section class="detail-section">
+
+            <h2>등록된 리뷰</h2>
+
+            <?php if ($reviews->num_rows === 0): ?>
+
+                <div class="empty-state">
+                    아직 등록된 리뷰가 없습니다.
+                </div>
+
+            <?php else: ?>
+
+                <?php while ($review = $reviews->fetch_assoc()): ?>
+
+                    <?php
+                    $rating = max(
+                        0,
+                        min(5, (int)$review['rating'])
+                    );
+                    ?>
+
+                    <article class="review-card">
+
+                        <strong>
+                            <?= htmlspecialchars($review['username']) ?>
+                        </strong>
+
+                        <p class="review-rating">
+                            <?= str_repeat('★', $rating) ?>
+                            <?= str_repeat('☆', 5 - $rating) ?>
+                        </p>
+
+                        <p>
+                            <?= nl2br(
+                                htmlspecialchars(
+                                    $review['content']
+                                )
+                            ) ?>
+                        </p>
+
+                        <small>
+                            <?= htmlspecialchars($review['created_at']) ?>
+                        </small>
+
+                    </article>
+
+                <?php endwhile; ?>
+
+            <?php endif; ?>
+
+        </section>
+
+    <?php endif; ?>
 
 </main>
 
-
-<footer>
-    <p>VulnShop Security Lab</p>
-</footer>
+<?php require __DIR__ . '/config/footer.php'; ?>
 
 </body>
+</html>
+
 
 </html>

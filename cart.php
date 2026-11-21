@@ -3,6 +3,7 @@
 session_start();
 
 require_once __DIR__ . '/config/db.php';
+require_once __DIR__ . '/config/product-image.php';
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: /login.php');
@@ -286,7 +287,8 @@ $stmt = $conn->prepare("
         p.id AS product_id,
         p.name,
         p.price,
-        p.stock
+        p.stock,
+        p.image
     FROM cart_items ci
     JOIN products p
         ON ci.product_id = p.id
@@ -338,246 +340,446 @@ if (isset($_SESSION['coupon_code'])) {
 }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="ko">
 
 <head>
-
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>장바구니 - VulnShop</title>
 
-    <link
-        rel="stylesheet"
-        href="/css/style.css"
-    >
-
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/products.css">
+    <link rel="stylesheet" href="/css/cart.css">
 </head>
 
-<body>
+<body class="cart-page">
 
-<header>
+<?php require __DIR__ . '/config/header.php'; ?>
 
-    <div class="container header-inner">
+<main class="container cart-main">
 
-        <h1>
-            <a href="/">VulnShop</a>
-        </h1>
+    <!-- 페이지 경로 -->
 
-        <?php require __DIR__ . '/config/nav.php'; ?>
-
+    <div class="breadcrumb">
+        <a href="/">홈</a>
+        <span>/</span>
+        <span>장바구니</span>
     </div>
 
-</header>
+    <!-- 페이지 제목 -->
 
+    <section class="cart-heading">
 
-<main class="container">
-
-    <section class="hero">
+        <span class="section-label">
+            VULNSHOP SHOPPING
+        </span>
 
         <h2>장바구니</h2>
 
-        <?php if ($message): ?>
-
-            <p>
-                <?= htmlspecialchars($message) ?>
-            </p>
-
-        <?php endif; ?>
-
-
-        <?php if ($items->num_rows === 0): ?>
-
-            <p>장바구니가 비어 있습니다.</p>
-
-        <?php else: ?>
-
-            <?php while ($item = $items->fetch_assoc()): ?>
-
-                <?php
-
-                $subtotal =
-                    $item['price'] * $item['quantity'];
-
-                $total += $subtotal;
-
-                ?>
-
-                <div class="product-card">
-
-                    <h3>
-                        <?= htmlspecialchars($item['name']) ?>
-                    </h3>
-
-                    <p>
-                        가격:
-                        <?= number_format($item['price']) ?>원
-                    </p>
-
-
-                    <form method="post">
-
-                        <input
-                            type="hidden"
-                            name="action"
-                            value="update"
-                        >
-
-                        <input
-                            type="hidden"
-                            name="item_id"
-                            value="<?= (int)$item['id'] ?>"
-                        >
-
-                        <label>
-                            수량:
-
-                            <input
-                                type="number"
-                                name="quantity"
-                                min="1"
-                                max="<?= (int)$item['stock'] ?>"
-                                value="<?= (int)$item['quantity'] ?>"
-                            >
-
-                        </label>
-
-                        <button
-                            class="button"
-                            type="submit"
-                        >
-                            변경
-                        </button>
-
-                    </form>
-
-
-                    <p>
-                        합계:
-                        <?= number_format($subtotal) ?>원
-                    </p>
-
-
-                    <form method="post">
-
-                        <input
-                            type="hidden"
-                            name="action"
-                            value="delete"
-                        >
-
-                        <input
-                            type="hidden"
-                            name="item_id"
-                            value="<?= (int)$item['id'] ?>"
-                        >
-
-                        <button
-                            class="button"
-                            type="submit"
-                        >
-                            삭제
-                        </button>
-
-                    </form>
-
-                </div>
-
-                <br>
-
-            <?php endwhile; ?>
-
-
-            <?php
-
-$discountAmount =
-    $total * ($discountPercent / 100);
-
-$finalTotal =
-    $total - $discountAmount;
-
-?>
-
-<h3>
-    상품 금액:
-    <?= number_format($total) ?>원
-</h3>
-
-<?php if ($discountPercent > 0): ?>
-
-    <p>
-        적용 쿠폰:
-        <?= htmlspecialchars($_SESSION['coupon_code']) ?>
-    </p>
-
-    <p>
-        할인:
-        <?= $discountPercent ?>%
-        (-<?= number_format($discountAmount) ?>원)
-    </p>
-
-<?php endif; ?>
-
-<h3>
-    최종 결제 금액:
-    <?= number_format($finalTotal) ?>원
-</h3>
-
-<form method="post">
-
-    <input
-        type="hidden"
-        name="action"
-        value="apply_coupon"
-    >
-
-    <label>
-        쿠폰 코드:
-
-        <input
-            type="text"
-            name="coupon_code"
-            placeholder="WELCOME10"
-        >
-    </label>
-
-    <button
-        class="button"
-        type="submit"
-    >
-        쿠폰 적용
-    </button>
-
-</form>
-
-<br>
-
-<form method="post" action="/order.php">
-
-    <button
-        class="button"
-        type="submit"
-    >
-        주문하기
-    </button>
-
-</form>
-
-        <?php endif; ?>
+        <p>
+            장바구니에 담은 상품을 확인하고
+            주문을 진행해 주세요.
+        </p>
 
     </section>
 
+    <!-- 주문 진행 단계 -->
+
+    <div class="checkout-steps">
+
+        <div class="checkout-step active">
+            <span>01</span>
+            장바구니
+        </div>
+
+        <span class="step-arrow">›</span>
+
+        <div class="checkout-step">
+            <span>02</span>
+            주문
+        </div>
+
+        <span class="step-arrow">›</span>
+
+        <div class="checkout-step">
+            <span>03</span>
+            주문 완료
+        </div>
+
+    </div>
+
+    <!-- 처리 결과 메시지 -->
+
+    <?php if ($message): ?>
+
+        <div class="cart-message" role="status">
+            <?= htmlspecialchars(
+                $message,
+                ENT_QUOTES,
+                'UTF-8'
+            ) ?>
+        </div>
+
+    <?php endif; ?>
+
+    <!-- 장바구니가 비어 있는 경우 -->
+
+    <?php if ($items->num_rows === 0): ?>
+
+        <section class="cart-empty">
+
+            <span class="empty-cart-icon">
+                &#128722;
+            </span>
+
+            <h3>장바구니가 비어 있습니다.</h3>
+
+            <p>
+                VulnShop의 다양한 IT·디지털 제품을
+                만나보세요.
+            </p>
+
+            <a class="button" href="/products.php">
+                쇼핑 계속하기
+            </a>
+
+        </section>
+
+    <?php else: ?>
+
+        <div class="cart-layout">
+
+            <!-- 왼쪽 상품 영역 -->
+
+            <div class="cart-content">
+
+                <section class="cart-panel">
+
+                    <div class="cart-panel-heading">
+
+                        <h3>장바구니 상품</h3>
+
+                        <span>
+                            총 <?= (int)$items->num_rows ?>종
+                        </span>
+
+                    </div>
+
+                    <?php while ($item = $items->fetch_assoc()): ?>
+
+                        <?php
+
+                        $subtotal =
+                            $item['price'] *
+                            $item['quantity'];
+
+                        $total += $subtotal;
+
+                        $imageUrl = getProductImage(
+                            $item['image'] ?? null
+                        );
+
+                        $productId =
+                            (int)$item['product_id'];
+
+                        ?>
+
+                        <article class="cart-item">
+
+                            <!-- 상품 이미지 -->
+
+                            <a class="cart-item-image"
+                               href="/products.php?id=<?= $productId ?>">
+
+                                <?php if ($imageUrl !== null): ?>
+
+                                    <img
+                                        src="<?= htmlspecialchars($imageUrl, ENT_QUOTES, 'UTF-8') ?>"
+                                        alt="<?= htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8') ?>"
+                                        width="1000"
+                                        height="1000"
+                                        loading="lazy"
+                                    >
+
+                                <?php else: ?>
+
+                                    <span class="image-placeholder">
+                                        <?= htmlspecialchars($item['name']) ?>
+                                    </span>
+
+                                <?php endif; ?>
+
+                            </a>
+
+                            <!-- 상품 정보 -->
+
+                            <div class="cart-item-info">
+
+                                <span class="product-category">
+                                    IT · DIGITAL
+                                </span>
+
+                                <h3>
+                                    <a href="/products.php?id=<?= $productId ?>">
+
+                                        <?= htmlspecialchars($item['name']) ?>
+
+                                    </a>
+                                </h3>
+
+                                <p class="cart-unit-price">
+                                    단가:
+                                    <?= number_format($item['price']) ?>원
+                                </p>
+
+                                <!-- 수량 변경 -->
+
+                                <form method="post"
+                                      class="cart-quantity-form">
+
+                                    <input
+                                        type="hidden"
+                                        name="action"
+                                        value="update"
+                                    >
+
+                                    <input
+                                        type="hidden"
+                                        name="item_id"
+                                        value="<?= (int)$item['id'] ?>"
+                                    >
+
+                                    <label>
+                                        수량
+
+                                        <input
+                                            type="number"
+                                            name="quantity"
+                                            min="1"
+                                            max="<?= (int)$item['stock'] ?>"
+                                            value="<?= (int)$item['quantity'] ?>"
+                                            required
+                                        >
+
+                                    </label>
+
+                                    <button
+                                        class="cart-outline-button"
+                                        type="submit"
+                                    >
+                                        변경
+                                    </button>
+
+                                </form>
+
+                                <p class="cart-stock">
+                                    구매 가능 재고:
+                                    <?= (int)$item['stock'] ?>개
+                                </p>
+
+                            </div>
+
+                            <!-- 상품 합계 및 삭제 -->
+
+                            <div class="cart-item-total">
+
+                                <strong>
+                                    <?= number_format($subtotal) ?>원
+                                </strong>
+
+                                <form method="post">
+
+                                    <input
+                                        type="hidden"
+                                        name="action"
+                                        value="delete"
+                                    >
+
+                                    <input
+                                        type="hidden"
+                                        name="item_id"
+                                        value="<?= (int)$item['id'] ?>"
+                                    >
+
+                                    <button
+                                        class="cart-delete-button"
+                                        type="submit"
+                                    >
+                                        삭제
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </article>
+
+                    <?php endwhile; ?>
+
+                </section>
+
+                <!-- 할인 쿠폰 -->
+
+                <section class="cart-panel coupon-panel">
+
+                    <h3>할인 쿠폰</h3>
+
+                    <p>
+                        보유하고 있는 쿠폰 코드를
+                        입력해 주세요.
+                    </p>
+
+                    <form method="post"
+                          class="coupon-form">
+
+                        <input
+                            type="hidden"
+                            name="action"
+                            value="apply_coupon"
+                        >
+
+                        <input
+                            type="text"
+                            name="coupon_code"
+                            placeholder="쿠폰 코드 입력 (WELCOME10)"
+                            aria-label="쿠폰 코드"
+                            required
+                        >
+
+                        <button
+                            class="button"
+                            type="submit"
+                        >
+                            쿠폰 적용
+                        </button>
+
+                    </form>
+
+                    <?php if ($discountPercent > 0): ?>
+
+                        <div class="coupon-applied">
+
+                            <strong>
+                                할인 쿠폰이 적용되었습니다.
+                            </strong>
+
+                            <p>
+                                <?= htmlspecialchars(
+                                    $_SESSION['coupon_code'] ?? '',
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>
+
+                                ·
+
+                                <?= htmlspecialchars(
+                                    (string)$discountPercent
+                                ) ?>% 할인
+                            </p>
+
+                        </div>
+
+                    <?php endif; ?>
+
+                </section>
+
+            </div>
+
+            <?php
+
+            $discountAmount =
+                $total * ($discountPercent / 100);
+
+            $finalTotal =
+                $total - $discountAmount;
+
+            ?>
+
+            <!-- 오른쪽 결제 금액 영역 -->
+
+            <aside class="cart-summary">
+
+                <h3>주문 금액</h3>
+
+                <div class="summary-line">
+
+                    <span>총 상품 금액</span>
+
+                    <strong>
+                        <?= number_format($total) ?>원
+                    </strong>
+
+                </div>
+
+                <div class="summary-line">
+
+                    <span>쿠폰 할인</span>
+
+                    <strong class="discount-price">
+                        -<?= number_format($discountAmount) ?>원
+                    </strong>
+
+                </div>
+
+                <?php if ($discountPercent > 0): ?>
+
+                    <div class="summary-coupon">
+
+                        적용 할인율:
+                        <?= htmlspecialchars(
+                            (string)$discountPercent
+                        ) ?>%
+
+                    </div>
+
+                <?php endif; ?>
+
+                <div class="summary-divider"></div>
+
+                <div class="summary-final">
+
+                    <span>최종 주문 금액</span>
+
+                    <strong>
+                        <?= number_format($finalTotal) ?>원
+                    </strong>
+
+                </div>
+
+                <form method="post"
+                      action="/order.php">
+
+                    <button
+                        class="checkout-button"
+                        type="submit"
+                    >
+                        주문하기
+                    </button>
+
+                </form>
+
+                <a class="continue-shopping"
+                   href="/products.php">
+
+                    쇼핑 계속하기
+
+                </a>
+
+            </aside>
+
+        </div>
+
+    <?php endif; ?>
+
 </main>
 
-
-<footer>
-    <p>VulnShop Security Lab</p>
-</footer>
+<?php require __DIR__ . '/config/footer.php'; ?>
 
 </body>
 </html>

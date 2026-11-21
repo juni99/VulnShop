@@ -55,125 +55,150 @@ if ($post) {
 }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>게시글 상세 - VulnShop</title>
 
-    <title>게시글 - VulnShop</title>
-
-    <link
-        rel="stylesheet"
-        href="/css/style.css"
-    >
-
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/products.css">
+    <link rel="stylesheet" href="/css/board.css">
 </head>
 
-<body>
+<body class="board-page">
 
-<header>
+<?php require __DIR__ . '/config/header.php'; ?>
 
-    <div class="container header-inner">
+<main class="container board-main">
 
-        <h1>
-            <a href="/">VulnShop</a>
-        </h1>
-
-        <?php require __DIR__ . '/config/nav.php'; ?>
-
+    <div class="breadcrumb">
+        <a href="/">홈</a>
+        <span>/</span>
+        <a href="/board.php">고객센터</a>
+        <span>/</span>
+        <span>게시글 상세</span>
     </div>
 
-</header>
+    <?php if (!$post): ?>
 
-
-<main class="container">
-
-    <section class="hero">
-
-        <?php if (!$post): ?>
-
+        <section class="board-empty">
             <h2>게시글을 찾을 수 없습니다.</h2>
 
-        <?php else: ?>
-
-            <h2>
-                <?= htmlspecialchars($post['title']) ?>
-            </h2>
-
             <p>
-                작성자:
-                <?= htmlspecialchars($post['username']) ?>
+                존재하지 않는 게시글이거나
+                삭제된 게시글입니다.
             </p>
 
-            <p>
-                작성시간:
-                <?= htmlspecialchars($post['created_at']) ?>
-            </p>
+            <a class="board-primary-button"
+               href="/board.php">
+                게시판으로 돌아가기
+            </a>
+        </section>
 
-            <hr>
+    <?php else: ?>
 
-            <p>
+        <section class="board-detail-panel">
+
+            <div class="board-detail-heading">
+
+                <span class="section-label">
+                    CUSTOMER INQUIRY
+                </span>
+
+                <h2>
+                    <?= htmlspecialchars(
+                        $post['title'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) ?>
+                </h2>
+
+                <div class="board-post-meta">
+
+                    <span>
+                        작성자:
+                        <?= htmlspecialchars(
+                            $post['username'],
+                            ENT_QUOTES,
+                            'UTF-8'
+                        ) ?>
+                    </span>
+
+                    <span>
+                        작성일:
+                        <?= htmlspecialchars(
+                            $post['created_at'],
+                            ENT_QUOTES,
+                            'UTF-8'
+                        ) ?>
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- 기존 Stored XSS 실습 코드 유지 -->
+
+            <div class="board-detail-content">
                 <?= nl2br($post['content']) ?>
-            </p>
-
+            </div>
 
             <?php if (
                 $attachments &&
                 $attachments->num_rows > 0
             ): ?>
 
-                <hr>
+                <div class="board-attachments">
 
-                <h3>첨부파일</h3>
+                    <h3>첨부파일</h3>
 
-                <?php while (
-                    $attachment =
-                        $attachments->fetch_assoc()
-                ): ?>
+                    <?php while (
+                        $attachment =
+                            $attachments->fetch_assoc()
+                    ): ?>
 
-                    <p>
+                        <div class="attachment-item">
 
-                        <a
-                            href="/download.php?id=<?= (int)$attachment['id'] ?>"
-                        >
-                            <?= htmlspecialchars(
-                                $attachment['original_name']
-                            ) ?>
-                        </a>
+                            <span aria-hidden="true">📎</span>
 
-                    </p>
+                            <a href="/download.php?id=<?= (int)$attachment['id'] ?>">
 
-                <?php endwhile; ?>
+                                <?= htmlspecialchars(
+                                    $attachment['original_name'],
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>
+
+                            </a>
+
+                        </div>
+
+                    <?php endwhile; ?>
+
+                </div>
 
             <?php endif; ?>
 
-        <?php endif; ?>
+        </section>
 
-        <br>
+    <?php endif; ?>
 
-        <a
-            class="button"
-            href="/board.php"
-        >
-            목록으로
+    <div class="board-actions">
+        <a class="board-outline-button"
+           href="/board.php">
+            목록으로 돌아가기
         </a>
-
-    </section>
+    </div>
 
 </main>
 
-
-<footer>
-    <p>VulnShop Security Lab</p>
-</footer>
+<?php require __DIR__ . '/config/footer.php'; ?>
 
 </body>
-
 </html>

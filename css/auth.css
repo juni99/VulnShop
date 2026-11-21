@@ -1,0 +1,284 @@
+
+/* ==============================
+   VulnShop Membership Design
+   Login & Register
+   ============================== */
+
+.auth-page {
+    background: #f4f6fa;
+    color: #172033;
+    font-family: "Pretendard", "Malgun Gothic",
+                 Arial, sans-serif;
+}
+
+.auth-page .container {
+    width: 92%;
+    max-width: 1320px;
+}
+
+.auth-page a {
+    text-decoration: none;
+}
+
+/* 회원 페이지 전체 영역 */
+
+.auth-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+    padding: 65px 20px 80px;
+    background: linear-gradient(
+        145deg,
+        #f8fafc 0%,
+        #eef3fa 100%
+    );
+}
+
+/* 로그인 및 회원가입 카드 */
+
+.auth-card {
+    width: 100%;
+    max-width: 460px;
+    padding: 45px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.06);
+}
+
+.register-card {
+    max-width: 500px;
+}
+
+/* 회원 페이지 제목 */
+
+.auth-heading {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.auth-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #64748b;
+    margin-bottom: 14px;
+}
+
+.auth-logo {
+    font-size: 38px;
+    font-weight: 800;
+    color: #14233e;
+    letter-spacing: -2px;
+    margin: 0 0 28px;
+}
+
+.auth-logo span {
+    color: #2563eb;
+}
+
+.auth-heading h3 {
+    margin: 0 0 12px;
+    font-size: 26px;
+    letter-spacing: -0.8px;
+}
+
+.auth-heading p {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.8;
+    margin: 0;
+}
+
+/* 입력창 영역 */
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.auth-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.auth-field label {
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.auth-field input {
+    width: 100%;
+    min-height: 50px;
+    padding: 14px 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #172033;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s,
+                box-shadow 0.2s;
+}
+
+.auth-field input::placeholder {
+    color: #94a3b8;
+}
+
+.auth-field input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* 필수 입력 항목 */
+
+.required-mark {
+    color: #dc2626;
+    margin-left: 3px;
+}
+
+.auth-required-info {
+    margin: 0;
+    color: #64748b;
+    font-size: 11px;
+}
+
+/* 로그인 및 회원가입 버튼 */
+
+.auth-button {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    margin-top: 5px;
+    background: #2563eb;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s,
+                box-shadow 0.2s;
+}
+
+.auth-button:hover {
+    background: #1d4ed8;
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.2);
+}
+
+.auth-button:focus-visible,
+.auth-outline-button:focus-visible {
+    outline: 3px solid #93c5fd;
+    outline-offset: 3px;
+}
+
+/* 오류 및 성공 메시지 */
+
+.auth-alert {
+    margin-bottom: 22px;
+    padding: 15px;
+    font-size: 13px;
+    line-height: 1.7;
+    border: 1px solid;
+    border-radius: 8px;
+    overflow-wrap: anywhere;
+}
+
+.auth-error {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #b91c1c;
+}
+
+.auth-success {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #15803d;
+}
+
+.auth-success a {
+    display: inline-block;
+    color: #15803d;
+    font-weight: 700;
+    margin-top: 8px;
+}
+
+/* 카드 하단 영역 */
+
+.auth-divider {
+    height: 1px;
+    background: #e2e8f0;
+    margin: 30px 0 22px;
+}
+
+.auth-bottom {
+    text-align: center;
+}
+
+.auth-bottom p {
+    color: #64748b;
+    font-size: 13px;
+    margin: 0 0 15px;
+}
+
+.auth-outline-button {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: #ffffff;
+    color: #2563eb;
+    border: 1px solid #2563eb;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.auth-outline-button:hover {
+    background: #eff6ff;
+}
+
+.auth-home-link {
+    display: inline-block;
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 22px;
+}
+
+.auth-home-link:hover {
+    color: #2563eb;
+}
+
+/* 모바일 대응 */
+
+@media (max-width: 600px) {
+
+    .auth-main {
+        padding: 30px 16px 45px;
+    }
+
+    .auth-card {
+        padding: 30px 24px;
+        border-radius: 12px;
+    }
+
+    .auth-logo {
+        font-size: 32px;
+    }
+
+    .auth-heading h3 {
+        font-size: 23px;
+    }
+
+    .auth-heading {
+        margin-bottom: 28px;
+    }
+
+}

@@ -1,0 +1,548 @@
+
+/* ==============================
+   VulnShop Product Page
+   ============================== */
+
+.catalog-page {
+    background: #ffffff;
+    color: #172033;
+    font-family: "Pretendard", "Malgun Gothic",
+                 Arial, sans-serif;
+}
+
+.catalog-page .container {
+    width: 92%;
+    max-width: 1320px;
+}
+
+.catalog-main {
+    min-height: 70vh;
+    padding-top: 30px;
+    padding-bottom: 80px;
+}
+
+/* 페이지 경로 */
+
+.breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.breadcrumb a {
+    color: #64748b;
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    color: #2563eb;
+}
+
+/* 상품 목록 제목 */
+
+.catalog-heading {
+    margin: 15px 0 35px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.catalog-heading h2 {
+    margin: 10px 0;
+    font-size: 32px;
+    letter-spacing: -1px;
+}
+
+.catalog-heading p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* 상품 카드 */
+
+.catalog-page .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.catalog-page .product-card {
+    padding: 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #ffffff;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.catalog-page .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+}
+
+.catalog-page .product-image {
+    height: auto;
+    aspect-ratio: 4 / 3;
+    margin: 0;
+    border-radius: 0;
+    background: #f5f7fa;
+    overflow: hidden;
+}
+
+.catalog-page .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.catalog-page .product-button {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 13px;
+    color: #2563eb;
+    background: #ffffff;
+    border: 1px solid #2563eb;
+}
+
+.catalog-page .product-button:hover {
+    color: #ffffff;
+    background: #2563eb;
+}
+
+/* 상품 상세 영역 */
+
+.product-detail-layout {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    align-items: start;
+    gap: 65px;
+    padding: 20px 0 50px;
+}
+
+.detail-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    background: #f8fafc;
+    overflow: hidden;
+}
+
+.detail-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.detail-info {
+    padding: 20px 0;
+}
+
+.detail-info h2 {
+    font-size: 36px;
+    letter-spacing: -1px;
+    margin: 12px 0 18px;
+}
+
+.detail-description {
+    color: #64748b;
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.detail-price {
+    font-size: 36px;
+    font-weight: 800;
+    color: #14233e;
+    padding: 25px 0;
+    margin: 25px 0;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.detail-stock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding-bottom: 20px;
+    font-size: 14px;
+}
+
+.stock-available {
+    color: #15803d;
+    font-weight: 600;
+}
+
+.stock-unavailable {
+    color: #dc2626;
+    font-weight: 600;
+}
+
+/* 구매 영역 */
+
+.purchase-form {
+    margin-top: 20px;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    border-top: 1px solid #e2e8f0;
+}
+
+.quantity-control input {
+    width: 100px;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.add-to-cart {
+    display: block;
+    width: 100%;
+    margin-top: 15px;
+    padding: 18px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.add-to-cart:hover {
+    background: #1d4ed8;
+}
+
+.add-to-cart:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+}
+
+/* 상세 정보 메뉴 */
+
+.detail-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    margin: 30px 0;
+    overflow: hidden;
+}
+
+.detail-tabs a {
+    padding: 18px;
+    text-decoration: none;
+    text-align: center;
+    color: #334155;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.detail-tabs a:first-child {
+    border-right: 1px solid #e2e8f0;
+}
+
+.detail-tabs a:hover {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+/* 상세 정보 및 리뷰 */
+
+.detail-section {
+    padding: 30px;
+    margin: 25px 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #ffffff;
+    scroll-margin-top: 25px;
+}
+
+.detail-section h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 23px;
+}
+
+.detail-section p {
+    line-height: 1.8;
+}
+
+.detail-section textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    resize: vertical;
+    font: inherit;
+}
+
+.detail-section select {
+    padding: 10px 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #ffffff;
+}
+
+.review-card {
+    padding: 24px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.review-card:last-child {
+    border-bottom: none;
+}
+
+.review-rating {
+    color: #e5a000;
+    font-size: 19px;
+    letter-spacing: 3px;
+}
+
+.review-card small {
+    color: #94a3b8;
+}
+
+.empty-state {
+    padding: 60px 20px;
+    text-align: center;
+    color: #64748b;
+}
+
+/* 태블릿 */
+
+@media (max-width: 900px) {
+
+    .catalog-page .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .product-detail-layout {
+        gap: 25px;
+    }
+
+    .detail-info h2 {
+        font-size: 28px;
+    }
+
+    .detail-price {
+        font-size: 28px;
+    }
+
+}
+
+/* 모바일 */
+
+@media (max-width: 600px) {
+
+    .catalog-page .product-grid {
+        gap: 12px;
+    }
+
+    .product-detail-layout {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .detail-info h2 {
+        font-size: 26px;
+    }
+
+    .detail-price {
+        font-size: 28px;
+        margin: 15px 0;
+        padding: 20px 0;
+    }
+
+    .detail-section {
+        padding: 20px;
+    }
+
+}
+
+/* 상품 카드 추가 스타일 */
+
+.catalog-page .price {
+    font-size: 25px;
+    font-weight: 800;
+    color: #14233e;
+    letter-spacing: -0.7px;
+    margin: 20px 0 8px;
+}
+
+.catalog-page .product-image {
+    text-decoration: none;
+}
+
+.catalog-page .product-card h3 {
+    overflow-wrap: anywhere;
+}
+
+.catalog-page a {
+    text-decoration: none;
+}
+
+.catalog-page button,
+.catalog-page input,
+.catalog-page select,
+.catalog-page textarea {
+    font: inherit;
+}
+
+@media (max-width: 600px) {
+
+    .catalog-page .price {
+        font-size: 18px;
+    }
+
+    .catalog-heading h2 {
+        font-size: 26px;
+    }
+
+}
+
+/* ==============================
+   VulnShop Search Page
+   ============================== */
+
+.result-search {
+    display: flex;
+    width: 100%;
+    max-width: 650px;
+    margin: 25px 0 10px;
+    border: 2px solid #2563eb;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.result-search input {
+    flex: 1;
+    min-width: 0;
+    padding: 16px 20px;
+    border: none;
+    outline: none;
+    background: #ffffff;
+    font-size: 15px;
+}
+
+.result-search:focus-within {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.result-search button {
+    padding: 0 32px;
+    border: none;
+    background: #2563eb;
+    color: #ffffff;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.result-search button:hover {
+    background: #1d4ed8;
+}
+
+/* 검색 결과 제목 */
+
+.search-result-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.search-result-heading h2 {
+    font-size: 22px;
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.search-result-heading > span {
+    font-size: 14px;
+    color: #64748b;
+    white-space: nowrap;
+}
+
+.search-result-heading strong {
+    color: #2563eb;
+}
+
+/* 검색 결과 없음 */
+
+.search-empty {
+    padding: 75px 20px;
+    text-align: center;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+}
+
+.search-empty-icon {
+    display: block;
+    font-size: 65px;
+    color: #94a3b8;
+}
+
+.search-empty h3 {
+    font-size: 22px;
+    color: #172033;
+    margin: 15px 0;
+}
+
+.search-empty p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+.search-empty .button {
+    padding: 13px 25px;
+}
+
+/* 모바일 대응 */
+
+@media (max-width: 600px) {
+
+    .result-search input {
+        padding: 13px;
+        font-size: 13px;
+    }
+
+    .result-search button {
+        padding: 0 20px;
+    }
+
+    .search-result-heading h2 {
+        font-size: 17px;
+    }
+
+    .search-result-heading > span {
+        font-size: 12px;
+    }
+
+    .search-empty {
+        padding: 45px 15px;
+    }
+
+    .search-empty h3 {
+        font-size: 18px;
+    }
+
+}
