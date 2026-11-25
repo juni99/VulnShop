@@ -1,0 +1,159 @@
+
+/* VulnShop My Page */
+
+.mypage-page {
+    background: #ffffff;
+    color: #172033;
+}
+
+.mypage-main {
+    padding-top: 30px;
+    padding-bottom: 90px;
+    min-height: 70vh;
+}
+
+.mypage-heading {
+    margin: 25px 0 35px;
+}
+
+.mypage-heading h2 {
+    margin: 12px 0;
+    font-size: 34px;
+    color: #14233e;
+}
+
+.mypage-heading p,
+.mypage-description {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.mypage-layout {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 25px;
+    align-items: start;
+}
+
+.mypage-panel {
+    padding: 30px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+.mypage-panel h3 {
+    margin: 0 0 25px;
+    font-size: 21px;
+    color: #14233e;
+}
+
+.mypage-panel form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.mypage-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.mypage-field label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #334155;
+}
+
+.mypage-field input {
+    width: 100%;
+    min-width: 0;
+    padding: 13px 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #172033;
+    font: inherit;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.mypage-field input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+}
+
+.mypage-field input[readonly],
+.mypage-readonly {
+    background: #f8fafc;
+    color: #64748b;
+}
+
+.mypage-readonly {
+    margin: 0;
+    padding: 13px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.mypage-button {
+    padding: 14px 20px;
+    border: 0;
+    border-radius: 8px;
+    background: #2563eb;
+    color: #ffffff;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.mypage-button:hover {
+    background: #1d4ed8;
+}
+
+.mypage-help {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.7;
+    color: #64748b;
+}
+
+.mypage-alert {
+    padding: 15px 20px;
+    margin-bottom: 25px;
+    border: 1px solid;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.mypage-success {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #15803d;
+}
+
+.mypage-error {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #b91c1c;
+}
+
+@media (max-width: 900px) {
+    .mypage-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .mypage-heading h2 {
+        font-size: 27px;
+    }
+
+    .mypage-panel {
+        padding: 22px;
+    }
+}

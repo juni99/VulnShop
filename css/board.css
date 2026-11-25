@@ -380,3 +380,130 @@
         flex-wrap: wrap;
     }
 }
+
+/* ============================
+   Board Edit Actions
+   ============================ */
+
+.board-edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.board-edit-cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 24px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #475569;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.board-edit-cancel:hover {
+    border-color: #2563eb;
+    color: #2563eb;
+}
+
+.board-edit-actions .board-primary-button {
+    padding: 13px 24px;
+    border: 1px solid #2563eb;
+    border-radius: 8px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    .board-edit-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .board-edit-actions .board-primary-button,
+    .board-edit-cancel {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* ============================
+   Board Owner Actions
+   ============================ */
+
+.board-owner-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.board-owner-edit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border: 1px solid #2563eb;
+    border-radius: 8px;
+    color: #2563eb;
+    background: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.board-owner-edit:hover {
+    background: #eff6ff;
+}
+
+@media (max-width: 600px) {
+    .board-owner-actions {
+        flex-direction: column;
+    }
+
+    .board-owner-edit {
+        width: 100%;
+    }
+}
+
+/* 게시글 삭제 버튼 */
+
+.board-delete-form {
+    display: inline-flex;
+    margin: 0;
+}
+
+.board-owner-delete {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border: 1px solid #dc2626;
+    border-radius: 8px;
+    color: #dc2626;
+    background: #ffffff;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.board-owner-delete:hover {
+    background: #fef2f2;
+}
+
+@media (max-width: 600px) {
+    .board-delete-form,
+    .board-owner-delete {
+        width: 100%;
+    }
+}

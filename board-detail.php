@@ -30,6 +30,24 @@ if (!$post) {
     http_response_code(404);
 }
 
+/*
+ * 현재 로그인 사용자가 작성자인지 확인
+ */
+$isAuthor = (
+    $post !== null &&
+    isset($_SESSION['user_id']) &&
+    (int)$post['user_id'] === (int)$_SESSION['user_id']
+);
+
+/*
+ * 작성자 전용 게시글 삭제 토큰
+ */
+if ($isAuthor && empty($_SESSION['board_delete_csrf'])) {
+    $_SESSION['board_delete_csrf'] =
+        bin2hex(random_bytes(32));
+}
+
+
 
 /*
  * 첨부파일 조회
@@ -185,18 +203,67 @@ if ($post) {
 
             <?php endif; ?>
 
-        </section>
+                    </section>
 
-    <?php endif; ?>
+                <?php endif; ?>
 
-    <div class="board-actions">
-        <a class="board-outline-button"
-           href="/board.php">
-            목록으로 돌아가기
-        </a>
-    </div>
+                <div class="board-actions">
 
-</main>
+                    <?php if ($isAuthor): ?>
+
+                        <!-- 게시글 수정 -->
+                        <a
+                            href="/board-edit.php?id=<?= (int)$post['id'] ?>"
+                            class="board-owner-edit">
+                            게시글 수정
+                        </a>
+
+                        <!-- 게시글 삭제 -->
+                        <form
+                            method="POST"
+                            action="/board-delete.php"
+                            class="board-delete-form"
+                            onsubmit="return confirm('게시글을 정말 삭제하시겠습니까? 첨부파일도 함께 삭제됩니다.');"
+                        >
+
+                            <input
+                                type="hidden"
+                                name="post_id"
+                                value="<?= (int)$post['id'] ?>"
+                            >
+
+                            <input
+                                type="hidden"
+                                name="csrf_token"
+                                value="<?= htmlspecialchars(
+                                    $_SESSION['board_delete_csrf'],
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>"
+                            >
+
+                            <button
+                                type="submit"
+                                class="board-owner-delete">
+                                게시글 삭제
+                            </button>
+
+                        </form>
+
+                    <?php endif; ?>
+
+                    <!-- 목록으로 돌아가기 -->
+                    <a
+                        class="board-outline-button"
+                        href="/board.php">
+                        목록으로 돌아가기
+                    </a>
+
+                </div>
+
+
+            </main>
+
 
 <?php require __DIR__ . '/config/footer.php'; ?>
 

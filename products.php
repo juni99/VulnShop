@@ -98,7 +98,8 @@ if ($productId <= 0) {
             name,
             description,
             price,
-            stock
+            stock,
+            image
         FROM products
         ORDER BY id ASC
     ");

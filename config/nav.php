@@ -12,6 +12,8 @@
 
         <a href="/">홈</a>
 
+        <a href="/mypage.php">마이페이지</a>
+
         <a href="/orders.php">주문내역</a>
 
         <a href="/cart.php">장바구니</a>

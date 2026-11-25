@@ -5,7 +5,7 @@
         <span>VulnShop 공식 온라인 스토어</span>
 
         <div>
-            <a href="/board.php">고객센터</a>
+            <a href="/board.php">문의사항</a>
             <span class="top-divider">|</span>
             <a href="/notices.php">공지사항</a>
         </div>
